@@ -1,0 +1,58 @@
+/* ../../css/data.css */
+body {
+    background-color: #000; /* hitam */
+    color: #00ff00; /* hijau neon */
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+}
+
+h1 {
+    color: #00ff00;
+    border-bottom: 1px solid #00ff00;
+    padding-bottom: 5px;
+    margin-top: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+th, td {
+    border: 1px solid #00ff00;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #001a00;
+}
+
+td {
+    background-color: #000000;
+}
+
+a {
+    color: #00ff00;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: red;
+}
+
+.container {
+    max-width: 95%;
+    margin: auto;
+}
+
+input {
+    background-color: transparent;
+    border: 0.5px solid #00ff00;
+    height: 20px;
+    width: 160px;
+    color: #00ff00;
+}
