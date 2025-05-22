@@ -3,7 +3,8 @@ include '../../include/db.php';
 include '../../include/session.php';
 include 'navbar.php';
 
-function ambilSemua($query) {
+function ambilSemua($query)
+{
     global $conn;
     $hasil = mysqli_query($conn, $query);
     $data = [];
@@ -22,10 +23,13 @@ FROM tabel_resep tr");
 $suka = ambilSemua("SELECT ts.*, tu.username FROM tabel_suka ts JOIN tabel_user tu ON ts.id_user = tu.id_user");
 $komentar = ambilSemua("SELECT * FROM tabel_komentar");
 $bookmark = ambilSemua("SELECT * FROM tabel_bookmark");
+$bahan = ambilSemua("SELECT * FROM bahan_resep");
+$langkah = ambilSemua("SELECT * FROM langkah_resep ORDER BY id_resep, urutan ASC");
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,102 +46,154 @@ $bookmark = ambilSemua("SELECT * FROM tabel_bookmark");
 
 
 <body>
-<div class="container">
-    <h1>Data Pengguna</h1>
-    <table>
-        <tr>
-            <th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Tanggal Join</th><th>Actions</th>
-        </tr>
-        <?php foreach ($pengguna as $p): ?>
-        <tr>
-            <td><?= $p['id_user'] ?></td>
-            <td><?= $p['username'] ?></td>
-            <td><?= $p['email'] ?></td>
-            <td><?= $p['kategori'] ?></td>
-            <td><?= $p['tanggal_daftar'] ?></td>
-            <td>
-                <a href="update.php?table=tabel_user&id=<?= $p['id_user'] ?>">Update</a> |
-                <a href="delete.php?table=tabel_user&id=<?= $p['id_user'] ?>" onclick="return confirm('Are you sure to delete this data?')">Delete</a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
+    <div class="container">
+        <h1>Data Pengguna</h1>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Tanggal Join</th>
+                <th>Actions</th>
+            </tr>
+            <?php foreach ($pengguna as $p): ?>
+                <tr>
+                    <td><?= $p['id_user'] ?></td>
+                    <td><?= $p['username'] ?></td>
+                    <td><?= $p['email'] ?></td>
+                    <td><?= $p['kategori'] ?></td>
+                    <td><?= $p['tanggal_daftar'] ?></td>
+                    <td>
+                        <a href="update.php?table=tabel_user&id=<?= $p['id_user'] ?>">Update</a> |
+                        <a href="delete.php?table=tabel_user&id=<?= $p['id_user'] ?>"
+                            onclick="return confirm('Are you sure to delete this data?')">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
 
-    <h1>Data Resep</h1>
-    <table>
-        <tr>
-            <th>ID Resep</th><th>Judul</th><th>ID Uploader</th><th>Tanggal</th><th>Jumlah Suka</th><th>Komentar</th><th>Bookmark</th><th>Actions</th>
-        </tr>
-        <?php foreach ($resep as $r): ?>
-        <tr>
-            <td><?= $r['id_resep'] ?></td>
-            <td><?= $r['judul'] ?></td>
-            <td><?= $r['id_user'] ?></td>
-            <td><?= $r['tanggal_posting'] ?></td>
-            <td><?= $r['id_suka'] ?></td>
-            <td><?= $r['komentar'] ?></td>
-            <td><?= $r['id_bookmark'] ?></td>
-            <td>
-                <a href="update.php?table=tabel_resep&id=<?= $r['id_resep'] ?>">Update</a> |
-                <a href="delete.php?table=tabel_resep&id=<?= $r['id_resep'] ?>" onclick="return confirm('Are you sure to delete this data?')">Delete</a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
+        <h1>Data Resep</h1>
+        <table>
+            <tr>
+                <th>ID Resep</th>
+                <th>Judul</th>
+                <th>ID Uploader</th>
+                <th>Tanggal</th>
+                <th>Jumlah Suka</th>
+                <th>Komentar</th>
+                <th>Bookmark</th>
+                <th>Actions</th>
+            </tr>
+            <?php foreach ($resep as $r): ?>
+                <tr>
+                    <td><?= $r['id_resep'] ?></td>
+                    <td><?= $r['judul'] ?></td>
+                    <td><?= $r['id_user'] ?></td>
+                    <td><?= $r['tanggal_posting'] ?></td>
+                    <td><?= $r['id_suka'] ?></td>
+                    <td><?= $r['komentar'] ?></td>
+                    <td><?= $r['id_bookmark'] ?></td>
+                    <td>
+                        <a href="update.php?table=tabel_resep&id=<?= $r['id_resep'] ?>">Update</a> |
+                        <a href="delete.php?table=tabel_resep&id=<?= $r['id_resep'] ?>"
+                            onclick="return confirm('Are you sure to delete this data?')">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
 
-    <h1>Data Suka</h1>
-    <table>
-        <tr>
-            <th>ID Suka</th><th>ID Resep</th><th>ID User</th><th>Username</th><th>Actions</th>
-        </tr>
-        <?php foreach ($suka as $s): ?>
-        <tr>
-            <td><?= $s['id_suka'] ?></td>
-            <td><?= $s['id_resep'] ?></td>
-            <td><?= $s['id_user'] ?></td>
-            <td><?= $s['username'] ?></td>
-            <td>
-                <a href="delete.php?table=tabel_suka&id=<?= $s['id_suka'] ?>" onclick="return confirm('Are you sure to delete this data?')">Delete</a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
+        <h1>Data Bahan</h1>
+        <table>
+            <tr>
+                <th>ID Bahan</th>
+                <th>ID Resep</th>
+                <th>ID Bahan</th>
+                <th>Actions</th>
+            </tr>
+            <?php foreach ($bahan as $bh): ?>
+                <tr>
+                    <td><?= $bh['id'] ?></td>
+                    <td><?= $bh['id_resep'] ?></td>
+                    <td><?= htmlspecialchars($bh['isi_bahan']) ?></td>
+                    <td>
+                        <a href="update.php?table=bahan_resep&id=<?= $bh['id'] ?>">Update</a> |
+                        <a href="delete.php?table=bahan_resep&id=<?= $bh['id'] ?>"
+                            onclick="return confirm('Are you sure to delete this data?')">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
 
-    <h1>Data Komentar</h1>
-    <table>
-        <tr>
-            <th>ID Komentar</th><th>ID Resep</th><th>ID User</th><th>Isi</th><th>Tanggal</th><th>Actions</th>
-        </tr>
-        <?php foreach ($komentar as $k): ?>
-        <tr>
-            <td><?= $k['id_komentar'] ?></td>
-            <td><?= $k['id_resep'] ?></td>
-            <td><?= $k['id_user'] ?></td>
-            <td><?= $k['komentar'] ?></td>
-            <td><?= $k['tanggal'] ?></td>
-            <td>
-                <a href="delete.php?table=tabel_komentar&id=<?= $k['id_komentar'] ?>" onclick="return confirm('Are you sure to delete this data?')">Delete</a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
+        <h1>Data Suka</h1>
+        <table>
+            <tr>
+                <th>ID Suka</th>
+                <th>ID Resep</th>
+                <th>ID User</th>
+                <th>Username</th>
+                <th>Actions</th>
+            </tr>
+            <?php foreach ($suka as $s): ?>
+                <tr>
+                    <td><?= $s['id_suka'] ?></td>
+                    <td><?= $s['id_resep'] ?></td>
+                    <td><?= $s['id_user'] ?></td>
+                    <td><?= $s['username'] ?></td>
+                    <td>
+                        <a href="delete.php?table=tabel_suka&id=<?= $s['id_suka'] ?>"
+                            onclick="return confirm('Are you sure to delete this data?')">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
 
-    <h1>Data Bookmark</h1>
-    <table>
-        <tr>
-            <th>ID Bookmark</th><th>ID Resep</th><th>ID User</th><th>Actions</th>
-        </tr>
-        <?php foreach ($bookmark as $b): ?>
-        <tr>
-            <td><?= $b['id_bookmark'] ?></td>
-            <td><?= $b['id_resep'] ?></td>
-            <td><?= $b['id_user'] ?></td>
-            <td>
-                <a href="delete.php?table=tabel_bookmark&id=<?= $b['id_bookmark'] ?>" onclick="return confirm('Are you sure to delete this data?')">Delete</a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
-</div>
+        <h1>Data Komentar</h1>
+        <table>
+            <tr>
+                <th>ID Komentar</th>
+                <th>ID Resep</th>
+                <th>ID User</th>
+                <th>Isi</th>
+                <th>Tanggal</th>
+                <th>Actions</th>
+            </tr>
+            <?php foreach ($komentar as $k): ?>
+                <tr>
+                    <td><?= $k['id_komentar'] ?></td>
+                    <td><?= $k['id_resep'] ?></td>
+                    <td><?= $k['id_user'] ?></td>
+                    <td><?= $k['komentar'] ?></td>
+                    <td><?= $k['tanggal'] ?></td>
+                    <td>
+                        <a href="delete.php?table=tabel_komentar&id=<?= $k['id_komentar'] ?>"
+                            onclick="return confirm('Are you sure to delete this data?')">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+
+        <h1>Data Bookmark</h1>
+        <table>
+            <tr>
+                <th>ID Bookmark</th>
+                <th>ID Resep</th>
+                <th>ID User</th>
+                <th>Actions</th>
+            </tr>
+            <?php foreach ($bookmark as $b): ?>
+                <tr>
+                    <td><?= $b['id_bookmark'] ?></td>
+                    <td><?= $b['id_resep'] ?></td>
+                    <td><?= $b['id_user'] ?></td>
+                    <td>
+                        <a href="delete.php?table=tabel_bookmark&id=<?= $b['id_bookmark'] ?>"
+                            onclick="return confirm('Are you sure to delete this data?')">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
 </body>
+
 </html>

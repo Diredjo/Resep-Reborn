@@ -3,30 +3,38 @@ session_start();
 include '../include/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $email    = $_POST['email'];
-    $passHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
     $kategori = $_POST['kategori'];
 
-    $_SESSION['register_data'] = $_POST;
-
-    $query_cekusr    = "SELECT id_user FROM tabel_user WHERE username = '$username'";
-    $result_cekusr   = mysqli_query($conn, $query_cekusr);
-
-    if (mysqli_num_rows($result_cekusr) > 0) {
-        $_SESSION['register_message'] = "Username sudah digunakan!";
+    if (empty($username) || empty($email) || empty($password) || empty($kategori)) {
+        $_SESSION['error'] = "Semua data harus diisi!";
         header("Location: register.php");
         exit;
     }
 
-    $query_insert  = "INSERT INTO tabel_user (username, email, password, kategori) 
-                      VALUES ('$username', '$email', '$passHash', '$kategori')";
-    if (mysqli_query($conn, $query_insert)) {
-        unset($_SESSION['register_data']);
-        $_SESSION['register_message'] = "Registrasi berhasil!";
-    } else {
-        $_SESSION['register_message'] = "Registrasi gagal! Silakan coba lagi.";
+    $check = mysqli_query($conn, "SELECT * FROM tabel_user WHERE username='$username' OR email='$email'");
+    if (mysqli_num_rows($check) > 0) {
+        $_SESSION['error'] = "Username atau email sudah digunakan!";
+        header("Location: register.php");
+        exit;
     }
+
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+
+    $insert = mysqli_query($conn, "INSERT INTO tabel_user (username, email, password, kategori)
+                                   VALUES ('$username', '$email', '$hash', '$kategori')");
+
+    if ($insert) {
+        $_SESSION['success'] = "Registrasi berhasil! Silakan login.";
+        header("Location: login.php");
+    } else {
+        $_SESSION['error'] = "Gagal mendaftar: " . mysqli_error($conn);
+        header("Location: register.php");
+    }
+    exit;
+} else {
     header("Location: register.php");
     exit;
 }

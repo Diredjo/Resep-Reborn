@@ -1,0 +1,367 @@
+/* ========================== */
+/* LATAR & ANIMASI GLOBAL     */
+/* ========================== */
+body.latar {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(90deg, #ff8a00, #e52e71);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: latarGerak 12s ease-in-out infinite alternate;
+  color: #fff;
+  background-image: url('../Foto/backgroundlandpage.jpg');
+  background-size: cover;
+  background-position: center;
+  backdrop-filter: blur(5px);
+}
+
+@keyframes latarGerak {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.overlay-darken {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 15, 0.2);
+  animation: gelapBergelombang 10s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+@keyframes gelapBergelombang {
+  0% { background: rgba(0, 0, 0, 0.8); }
+  30% { background: rgba(0, 0, 0, 0.2); }
+  100% { background: rgba(0, 0, 0, 0.5); }
+}
+
+/* ========================== */
+/* FORM LOGIN & DAFTAR       */
+/* ========================== */
+.bungkus-masuk, .bungkus-daftar {
+  position: relative;
+  z-index: 1;
+  background: rgba(30, 30, 30, 0.8);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  width: 90%;
+  max-width: 400px;
+  animation: melayang 1.5s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@keyframes melayang {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.salam-masuk, .salam-daftar {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.salam-masuk h1, .salam-daftar h1 {
+  font-size: 24px;
+  color: #fff;
+}
+
+.salam-masuk p, .salam-daftar p {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.logo {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 0.4rem;
+}
+
+.logomiring {
+  width: 370px;
+  height: 68px;
+  margin-bottom: 0.4rem;
+}
+
+.formulir {
+  display: flex;
+  flex-direction: column;
+}
+
+.kotak-input {
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  border: 1px solid #333;
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #eee;
+  transition: all 0.3s ease;
+}
+
+.kotak-input:focus {
+  border-color: #4e9cff;
+  outline: none;
+  box-shadow: 0 0 8px rgba(78, 156, 255, 0.5);
+  background-color: #1f1f1f;
+}
+
+.tombol-utama {
+  background: linear-gradient(135deg, #4e9cff, #2f80ed);
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.tombol-utama:hover {
+  background: linear-gradient(135deg, #2f80ed, #4e9cff);
+  transform: scale(1.02);
+}
+
+.tautan {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 10px;
+  color: #aaa;
+}
+
+.tautan a {
+  color: #4e9cff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.tautan a:hover {
+  color: #82c0ff;
+  text-decoration: underline;
+}
+
+/* ========================== */
+/* NOTIFIKASI ERROR / SUKSES */
+/* ========================== */
+.notif-error {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.notif-sukses {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ========================== */
+/* PROFIL & EDIT PROFIL      */
+/* ========================== */
+.profil {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.kartu-profil {
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  max-width: 420px;
+  width: 100%;
+  padding: 30px 25px;
+  text-align: center;
+  animation: melayang 1.2s ease;
+}
+
+.foto-bungkus {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.foto-profilku {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #4e9cff;
+  box-shadow: 0 0 12px rgba(78, 156, 255, 0.5);
+}
+
+.nama-user {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #ffffff;
+}
+
+.nama-user span {
+  font-weight: 800;
+  color: #4e9cff;
+}
+
+.info-user {
+  font-size: 14px;
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+.tombol-profil {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tombol-mini {
+  background: linear-gradient(135deg, #4e9cff, #2f80ed);
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.tombol-mini:hover {
+  transform: scale(1.03);
+  background: linear-gradient(135deg, #2f80ed, #4e9cff);
+}
+
+.tombol-logout {
+  background: #ff4d4d;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.tombol-logout:hover {
+  background: #ff2e2e;
+  transform: scale(1.03);
+}
+
+/* ========================== */
+/* EDIT PROFIL SPESIFIK      */
+/* ========================== */
+.wadah {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.kotak_profil {
+  background: #222;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.foto_profil {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #555;
+  margin-bottom: 20px;
+}
+
+.info_user {
+  width: 100%;
+}
+
+.info_user h2 {
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+}
+
+.info_user p {
+  font-size: 14px;
+  text-align: center;
+  color: #aaa;
+  margin: 6px 0;
+}
+
+.info_user label {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.info_user input[type="text"],
+.info_user textarea,
+.info_user input[type="file"] {
+  width: 100%;
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 10px;
+  color: #f0f0f0;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.info_user textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+form.kotak_profil input[type="file"] {
+  background: none;
+  border: none;
+}
+
+.tombol {
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(to right, #ff6e7f, #bfe9ff);
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.tombol:hover {
+  filter: brightness(1.1);
+  transform: scale(1.03);
+}
+
+.tombol_edit {
+  text-align: center;
+  margin-top: 20px;
+}

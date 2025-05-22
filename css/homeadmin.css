@@ -2,17 +2,40 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'poppins', sans-serif;
+    font-family: 'Poppins', 'Segoe UI', 'Roboto', sans-serif;
+
+}
+
+
+.kartu,
+.foto_kartu,
+.judul_kartu,
+.judul_kartu .judul_inner,
+.deskripsi_kartu,
+.ktg_kartu,
+.tanggal_kartu,
+.tombolresep,
+.tombolrecook,
+.tombolhapus,
+.formaksi button {
+    transition: all 0.3s ease-in-out;
+}
+
+.topresep .topresep_card,
+.topresep .topresep_judul,
+.topresep .topresep_foto {
+    transition: all 0.3s ease-in-out;
 }
 
 body {
-    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(../Foto/backgroundlandpage.jpg);
+    background-image: url('../Foto/backgroundlandpage.jpg');
     backdrop-filter: blur(10px);
     color: #fff;
     line-height: 1.6;
-    overflow-x: hidden;
+    overflow-x: hidden !important;
     padding-bottom: 70px;
 }
+
 
 a {
     color: inherit;
@@ -25,6 +48,12 @@ button {
     outline: none;
     background: none;
     color: inherit;
+}
+
+button:focus,
+a:focus {
+    outline: 2px solid #ff9f1c;
+    outline-offset: 4px;
 }
 
 .navbaratas {
@@ -45,11 +74,6 @@ button {
 
 .logohome .logofoto {
     height: 40px;
-    transition: transform 0.5s ease;
-}
-
-.logohome .logofoto:hover {
-    height: 50px;
 }
 
 .pencarian {
@@ -62,7 +86,7 @@ button {
 
 .kotakpencarian {
     background: none;
-    outline:none;
+    outline: none;
     border: none;
     color: #fff;
     width: 150px;
@@ -119,7 +143,7 @@ button {
 }
 
 .slider {
-    width: 100vw;
+    width: 100%;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -138,10 +162,14 @@ button {
 
 .gambar {
     width: 100vw;
-    height: 100vh;
+    height: 50vh;
     object-fit: cover;
     display: block;
     aspect-ratio: 4 / 3;
+}
+
+.fotoslider .gambar {
+    transition: opacity 0.6s ease-in-out;
 }
 
 .nav_manual {
@@ -211,10 +239,6 @@ button {
     font-weight: bold;
 }
 
-.utama, .kedua:hover {
-text-decoration: underline;
-}
-
 .utama {
     background: linear-gradient(90deg, #ff8a00, #e52e71);
     color: #fff;
@@ -223,6 +247,17 @@ text-decoration: underline;
 .kedua {
     background-color: #2c2c2c;
     border: 1px solid #fff;
+}
+
+.utama:hover {
+    opacity: 0.85;
+    transform: scale(1.03);
+}
+
+.kedua:hover {
+    background-color: #444;
+    color: #fff;
+    transform: scale(1.03);
 }
 
 
@@ -299,7 +334,7 @@ text-decoration: underline;
 
 .sort-select {
     background-image: linear-gradient(45deg, transparent 50%, #fff 50%),
-                      linear-gradient(135deg, #fff 50%, transparent 50%);
+        linear-gradient(135deg, #fff 50%, transparent 50%);
     background-position: right 0.7rem top 50%, right 0.4rem top 50%;
     background-size: 8px 8px;
     background-repeat: no-repeat;
@@ -330,12 +365,39 @@ text-decoration: underline;
 
 
 .atas_resep {
-    background-color: #111;
-    padding: 20px 0;
+    background: linear-gradient(135deg, #1c1c1c, #111);
+    padding: 24px 0 20px;
     text-align: center;
     color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.atas_resep::before {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 138, 0, 0.06) 0%, transparent 70%);
+    animation: pulseGlow 8s infinite;
+    z-index: 0;
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.6;
+    }
 }
 
 .atas_resep h2 {
@@ -345,7 +407,8 @@ text-decoration: underline;
     text-transform: uppercase;
     position: relative;
     display: inline-block;
-
+    z-index: 1;
+    text-shadow: 0 0 8px rgba(255, 138, 0, 0.4), 0 0 16px rgba(229, 46, 113, 0.3);
 }
 
 .atas_resep h2::after {
@@ -358,244 +421,327 @@ text-decoration: underline;
     border-radius: 2px;
 }
 
+
 .topresep {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    gap: 20px;
-    max-width: 1200px;
+    overflow-y: hidden;
+    gap: 22px;
+    max-width: 1250px;
     margin: 0 auto;
-    padding: 0 25px 39px;
-    justify-content: center;
+    padding: 0 25px 45px;
+    justify-content: flex-start;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #ff8a00 transparent;
+    -ms-overflow-style: none;
+    /* Internet Explorer and Edge */
+    -webkit-overflow-scrolling: touch;
 }
 
-.topresep .topresep_card {
+.topresep .topkartu {
     flex: 0 0 auto;
-    min-width: 500px;
-    background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
-    border-radius: 12px;
-    overflow: hidden;   
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    width: 220px;
+    min-height: 320px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(6px);
+    border-radius: 14px;
+    overflow: hidden;
     position: relative;
-    width: 100%;
+    scroll-snap-align: center;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
 }
 
-.topresep .topresep_card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+.topresep .topkartu:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.topresep .topkartu:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.topresep .topkartu:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.topresep .topkartu:hover {
+    box-shadow: 0 10px 30px rgba(255, 138, 0, 0.2), 0 6px 14px rgba(0, 0, 0, 0.5);
+}
+
+.topresep .topkartu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.25) 50%,
+            rgba(255, 255, 255, 0.05) 100%);
+    transform: skewX(-25deg);
+    pointer-events: none;
+}
+
+.topresep .topresep_card:hover::before {
+    animation: swipe 0.9s ease;
+}
+
+@keyframes swipe {
+    from {
+        left: -75%;
+    }
+
+    to {
+        left: 125%;
+    }
 }
 
 .topresep .topresep_foto {
-    width: auto;
-    height: 100%;
-    aspect-ratio: 16 / 9;
+    width: 100%;
+    height: 160px;
     object-fit: cover;
-    border-radius: 8px;
     display: block;
 }
 
 .topresep .topresep_judul {
-    display: block;
-    padding: 12px;
-    font-size: 1.1rem;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 1rem;
     font-weight: bold;
     color: #ff8a00;
-    text-decoration: none;
-    text-align: center;
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
-    transition: color 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    position: relative;
 }
 
 .topresep .topresep_judul:hover {
     color: #e52e71;
 }
 
+.topresep .topresep_judul::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0.2rem;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    transition: width 0.3s ease-in-out;
+}
+
+.topresep .topresep_judul:hover::after {
+    width: 100%;
+}
+
+
+
+
+
 
 
 
 .gridresep {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(259.5px, 1fr));
-    gap: 5px;
-    max-width: 1500px;
-    margin: 0 auto;
-    padding: 16px;
-    justify-items: center;
-}
-
-.gridresep h2 {
-    grid-column: 1 / -1;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: white;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    padding: 2rem;
 }
 
 .kartu {
-    background-color: #1e1e1e;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 5px;
-    transition: transform 0.3s ease;
+    width: 220px;
+    min-height: 320px;
+    background: rgba(255,255,255,0.05);
+backdrop-filter: blur(6px);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center top;
+    padding: 0 0 1rem;
+    box-sizing: border-box;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     display: flex;
+    overflow: hidden;
     flex-direction: column;
-    width: 100%;
-    max-width: 300px;
-    opacity: 98.5;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.kartu:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
 .foto_kartu {
     width: 100%;
-    height: auto;
+    height: 170px;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    border-radius: 8px;
-    display: block;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.judul_kartu {
-  display: block;
-  overflow: hidden;
-  text-align: left;
-  margin: 12px 2.5px 0;
-  color: white;
-  text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  position: relative;
-}
-
-.judul_kartu .judul_inner {
-  display: inline-block;
-  white-space: nowrap;
-  transform: translateX(0);
-  transition: transform 6s linear;
-}
-
-.judul_kartu:hover .judul_inner {
-  transform: translateX(-120%);
-  transition-duration: 6s;
-}
-
-.judul_kartu:not(:hover) .judul_inner {
-  transition-duration: 1.2s;
-}
-
-.deskripsi_kartu {
-  display: block;
-  overflow: hidden;
-  text-align: left;
-  margin: 0 2.5px 20px;
-  color: rgba(255, 255, 255, 0.650);
-  text-decoration: none;
-  font-size: 0.9rem;
-  position: relative;
-}
-
-.tanggal_kartu {
-  display: block;
-  overflow: hidden;
-  text-align: right;
-  margin: 0 2.5px 0;
-  color: rgba(255, 255, 255, 0.425);
-  text-decoration: none;
-  font-size: 0.7rem;
-  position: relative;
+.foto_kartu:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.04) rotate(0.5deg);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 
-.tombolresep {
+.aksi_atas.tombolresep {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 8px;
-    gap: 8px;
+    margin: 0 0.5rem 0;
+    padding: 0 4px;
 }
 
 .kiri_tombol,
 .kanan_tombol {
     display: flex;
-    gap: 3px;
     align-items: center;
 }
 
-.kiri_tombol form,
-.kanan_tombol form {
+.kiri_tombol {
+    gap: 12px;
+}
+
+.kanan_tombol {
+    margin-left: auto;
+}
+
+.formaksi {
     display: inline;
 }
 
-.formaksi button {
+.tombolsuka,
+.tombolkomentar,
+.tomboltandabuku {
     background: none;
     border: none;
-    color: white;
-    font-size: 1.1rem;
+    font-size: 0.85rem;
+    color: #ffffff;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 0.25rem;
     cursor: pointer;
     transition: color 0.2s ease;
-    padding: 4px 6px;
 }
 
-.formaksi button:hover {
-    color: #ff9f1c;
+.tomboltandabuku {
+    color: #999;
+}
+
+.tombolsuka i,
+.tombolkomentar i,
+.tomboltandabuku i {
+    font-size: 1.2rem;
+}
+
+
+.judul-desk {
+    margin-top: 0.75rem;
+}
+
+.judul_kartu,
+.deskripsi_kartu {
+    display: block;
+    color: #f1f1f1;
+    text-decoration: none;
+    margin-bottom: 0.25rem;
+    margin: 0.2rem 0.5rem 0;
+}
+
+.judul_inner {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.deskripsi_kartu span {
+    font-size: 0.85rem;
+    color: #ccc;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ktg-tgl {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0.5rem 0;
+}
+
+.ktg_kartu,
+.tanggal_kartu {
+    font-size: 0.75rem;
+    color: #aaa;
+    text-decoration: none;
 }
 
 .bawah_kartu {
     display: flex;
-    gap: 10px;
-    margin-top: auto;
-}
-
-.bawah_kartu form {
-    flex: 1;
+    justify-content: space-between;
+    margin-top: 0.75rem;
 }
 
 .tombolrecook,
 .tombolhapus {
-    width: 100%;
-    padding: 9px 12px;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    font-weight: 500;
+    background-color: #ff8c00;
+    color: #fff;
+    border: none;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
-    background-color: #2a2a2a;
-    color: white;
-    border: none;
+    gap: 0.4rem;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: background 0.2s ease;
 }
 
 .tombolhapus {
-    background-color: #2a0000;
-    color: #ff4c4c;
-}
-
-.tombolhapus:hover {
-    color: #ff7a7a;
+    background-color: #dc3545;
 }
 
 .tombolrecook:hover {
-    color: #ff9f1c;
+    background-color: #e67600;
 }
 
-.tombolrecook i,
-.tombolhapus i {
-    font-size: 1rem;
+.tombolhapus:hover {
+    background-color: #c82333;
 }
 
-.aksi_kartu {
-    flex-direction: column;
-    align-items: flex-start;
-}
 
-form.formaksi {
-    justify-content: flex-start;
-}
+
+
 
 
 

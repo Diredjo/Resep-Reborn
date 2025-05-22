@@ -1,56 +1,78 @@
 <?php
+include '../include/db.php';
+
+$success = "";
+$error = "";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $kategori = $_POST['kategori'];
+
+    if (empty($username) || empty($email) || empty($password) || empty($kategori)) {
+        $error = "Semua data harus diisi!";
+    } else {
+        $check_query = "SELECT * FROM tabel_user WHERE username = '$username' OR email = '$email'";
+        $check_result = mysqli_query($conn, $check_query);
+
+        if (mysqli_num_rows($check_result) > 0) {
+            $error = "Username atau email sudah terdaftar!";
+        } else {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            $insert_query = "INSERT INTO tabel_user (username, email, password, kategori)
+                             VALUES ('$username', '$email', '$hashed_password', '$kategori')";
+            if (mysqli_query($conn, $insert_query)) {
+                $success = "Registrasi berhasil! Silakan login.";
+            } else {
+                $error = "Gagal mendaftar: " . mysqli_error($conn);
+            }
+        }
+    }
+}
+?>
+
+<?php
 session_start();
-$message = isset($_SESSION['register_message']) ? $_SESSION['register_message'] : "";
-unset($_SESSION['register_message']);
 ?>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link href="FotoDSB/LogoPutih.png" rel='shorcut icon'>
-    <link rel="stylesheet" href="style.css">
-    <script>
-        function closeModal() {
-            document.getElementById('successModal').style.display = 'none';
-            window.location.href = 'login.php';
-        }
-        window.onload = function() {
-            let modal = document.getElementById('successModal');
-            if (modal) {
-                modal.style.display = 'block';
-                setTimeout(closeModal, 3000);
-            }
-        };
-    </script>
+    <title>Daftar - Resep Reborn</title>
+    <link rel="stylesheet" href="../css/akun.css">
 </head>
-
-<body>
-    <div class="login-container">
-        <img src="../Foto/LogoMiring.png" alt="Resep Reborn Logo" class="logo">
-        <form action="register_process.php" method="POST">
-            <input type="text" name="username" placeholder="Username" required value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '' ?>">
-            <input type="email" name="email" placeholder="Email" required value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
-            <input type="password" name="password" placeholder="Password" required>
-            <select name="kategori" required>
-                <option value="user" <?= isset($_POST['kategori']) && $_POST['kategori'] == "user" ? "selected" : "" ?>>User</option>
-                <option value="admin" <?= isset($_POST['kategori']) && $_POST['kategori'] == "admin" ? "selected" : "" ?>>Admin</option>
-            </select>
-            <button type="submit">Register</button>
-        </form>
-        <p>Sudah memiliki akun? <a href="login.php">Login di sini</a></p>
-    </div>
-
-    <?php if ($message): ?>
-        <div id="successModal" class="modal">
-            <div class="modal-content">
-                <p><?= $message; ?></p>
-                <p>Anda akan dialihkan ke login...</p>
-            </div>
+<body class="latar">
+    <div class="overlay-darken"></div>
+    <section class="bungkus-daftar">
+        <div class="salam-daftar">
+            <img src="../foto/logomiring.png" alt="Logo" class="logomiring">
+            <h1>Gabung Yuk!</h1>
+            <p>Yuk, jadi bagian dari komunitas keren ini ✨</p>
         </div>
-    <?php endif; ?>
+        <?php
+        if (isset($_SESSION['error'])) {
+            echo '<div class="notif-error">'.$_SESSION['error'].'</div>';
+            unset($_SESSION['error']);
+        }
+        if (isset($_SESSION['success'])) {
+            echo '<div class="notif-sukses">'.$_SESSION['success'].'</div>';
+            unset($_SESSION['success']);
+        }
+        ?>
+        <form action="register_process.php" method="POST" class="formulir">
+            <input type="text" name="username" placeholder="Nama Pengguna" class="kotak-input" required>
+            <input type="email" name="email" placeholder="Email" class="kotak-input" required>
+            <input type="password" name="password" placeholder="Kata Sandi" class="kotak-input" required>
+            <select name="kategori" class="kotak-input" required>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit" class="tombol-utama">Daftar</button>
+            <p class="tautan">Sudah punya akun? <a href="login.php">Masuk</a></p>
+        </form>
+    </section>
 </body>
-
 </html>
+

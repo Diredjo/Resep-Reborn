@@ -19,7 +19,7 @@ if ($id_user) {
 
     <nav>
         <ul>
-            <?php if ($_SESSION['role'] !== 'USER') { ?>
+            <?php if ($_SESSION['kategori'] !== 'USER') { ?>
                 <li><a href="home.php"><i class="fas fa-home"></i></a></li>
                 <?php } else { ?>
                     <li><a href="../USER/home.php"><i class="fas fa-home"></i></a></li>
@@ -28,7 +28,7 @@ if ($id_user) {
             <li><a href="search.php"><i class="fas fa-compass"></i></a></li>
             <li><a href="../post/create.php"><i class="fas fa-plus-circle"></i></a></li>
             <li><a href="data/data.php"><i class="fa-solid fa-server"></i></a></li>
-            <li><a href="profiladmin.php"><i class="fas fa-user"></i></a></li>
+            <li><a href="profil.php"><i class="fas fa-user"></i></a></li>
         </ul>
     </nav>
 </header>

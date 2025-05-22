@@ -12,16 +12,28 @@ if (isset($_GET['search'])) {
     $search = mysqli_real_escape_string($conn, $_GET['search']);
 }
 
-$sql = "SELECT r.id_resep, r.judul, r.foto, r.deskripsi, r.tanggal_posting,
-               (SELECT COUNT(*) FROM tabel_suka WHERE id_resep = r.id_resep) AS likes,
-               (SELECT COUNT(*) FROM tabel_komentar WHERE id_resep = r.id_resep) AS comments
-        FROM tabel_resep r";
+$urutan = $_GET['urutan'] ?? 'baru';
 
-if (!empty($search)) {
-    $sql .= " WHERE r.judul LIKE '%$search%'";
-}
+$by = match ($urutan) {
+    'baru' => 'ORDER BY r.id_resep DESC',
+    'lama' => 'ORDER BY r.id_resep ASC',
+    'suka' => 'ORDER BY s.jml DESC',
+    'komen' => 'ORDER BY k.jml DESC',
+    'tandai' => 'ORDER BY b.jml DESC',
+    default => '',
+};
 
-$result = mysqli_query($conn, $sql);
+$query = "SELECT r.id_resep, r.judul, r.deskripsi, r.tanggal_posting, r.kategori, r.foto, 
+                 COALESCE(s.jml, 0) AS likes,
+                 COALESCE(k.jml, 0) AS comments,
+                 COALESCE(b.jml, 0) AS bookmarks
+          FROM tabel_resep r
+          LEFT JOIN (SELECT id_resep, COUNT(*) AS jml FROM tabel_suka GROUP BY id_resep) s ON r.id_resep = s.id_resep
+          LEFT JOIN (SELECT id_resep, COUNT(*) AS jml FROM tabel_komentar GROUP BY id_resep) k ON r.id_resep = k.id_resep
+          LEFT JOIN (SELECT id_resep, COUNT(*) AS jml FROM tabel_bookmark GROUP BY id_resep) b ON r.id_resep = b.id_resep
+          $by";
+
+$result = mysqli_query($conn, $query);
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +77,7 @@ $result = mysqli_query($conn, $sql);
             <li><a href="home.php">Beranda</a></li>
             <li><a href="../about.php">Tentang</a></li>
             <li><a href="search.php">Jelajahi</a></li>
-            <li><a href="profiladmin.php">Profil</a></li>
+            <li><a href="profil.php">Profil</a></li>
             <li><a href="../akun/logout.php">Logout</a></li>
         </ul>
     </div>
@@ -73,25 +85,48 @@ $result = mysqli_query($conn, $sql);
 
 <body>
 
-    <div class="gridresep" id="resepContainer">
+    <div class="jelajahi-header">
         <h2>Jelajahi</h2>
-        <?php if (mysqli_num_rows($result) > 0): ?>
-            <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                <?php
-                $id_resep = $row['id_resep'];
-                $cek = mysqli_query($conn, "SELECT * FROM tabel_bookmark WHERE id_resep = '$id_resep' AND id_user = '$user_id'");
-                $bookmarked = mysqli_num_rows($cek) > 0;
-                ?>
-                <div class="kartu" data-title="<?= htmlspecialchars($row['judul']); ?>" data-like="<?= $row['likes']; ?>">
-                    <div style="position: relative;">
-                        <img src="../Post/uploads/<?= htmlspecialchars($row['foto']); ?>"
-                            alt="<?= htmlspecialchars($row['judul']); ?>" class="foto_kartu">
-
-                        <div class="tombolresep">
+        <form method="GET" class="sort-form">
+            <label for="urut" class="sort-label">
+                <i class="fas fa-sort"></i>
+            </label>
+            <select name="urutan" id="urut" onchange="this.form.submit()" class="sort-select">
+                <option value="baru" <?= ($_GET['urutan'] ?? '') === 'baru' ? 'selected' : '' ?>>Terbaru</option>
+                <option value="lama" <?= ($_GET['urutan'] ?? '') === 'lama' ? 'selected' : '' ?>>Terlama</option>
+                <option value="acak" <?= ($_GET['urutan'] ?? '') === 'acak' ? 'selected' : '' ?>>Acak</option>
+                <option value="suka" <?= ($_GET['urutan'] ?? '') === 'suka' ? 'selected' : '' ?>>Paling Disukai
+                    </option>
+                    <option value="komen" <?= ($_GET['urutan'] ?? '') === 'komen' ? 'selected' : '' ?>>Sering Dikomentari
+                        </option>
+                        <option value="tandai" <?= ($_GET['urutan'] ?? '') === 'tandai' ? 'selected' : '' ?>>Banyak Disimpan
+                            </option>
+            </select>
+        </form>
+    </div>
+    
+    <div class="gridresep" id="resepContainer">
+        <?php while ($row = mysqli_fetch_assoc($result)): ?>
+            <?php
+            $id_resep = $row['id_resep'];
+            
+            $cek = mysqli_query($conn, "SELECT * FROM tabel_bookmark WHERE id_resep = '$id_resep' AND id_user = '$user_id'");
+            $bookmarked = mysqli_num_rows($cek) > 0;
+            
+            $queryLike = mysqli_query($conn, "SELECT * FROM tabel_suka WHERE id_resep = $id_resep AND id_user = $user_id");
+            $ceklike = mysqli_num_rows($queryLike) > 0;
+            ?>
+            <div class="kartu" data-title="<?= htmlspecialchars($row['judul']); ?>" data-like="<?= $row['likes']; ?>">
+                <div style="position: relative;">
+                    <img src="../Post/uploads/<?= htmlspecialchars($row['foto']); ?>"
+                    alt="<?= htmlspecialchars($row['judul']); ?>" class="foto_kartu">
+                    
+                    <div class="aksi_atas tombolresep">
+                        <div class="kiri_tombol">
                             <form action="../Post/suka/like_unlike.php" method="POST" class="formaksi">
                                 <input type="hidden" name="id_resep" value="<?= $id_resep; ?>">
                                 <button type="submit" name="like" class="tombolsuka">
-                                    <?php if ($bookmarked): ?>
+                                    <?php if ($ceklike): ?>
                                         <i class="fas fa-heart"></i>
                                     <?php else: ?>
                                         <i class="far fa-heart"></i>
@@ -102,10 +137,12 @@ $result = mysqli_query($conn, $sql);
                             <form action="../Post/komentar/add_comment.php" method="POST" class="formaksi">
                                 <input type="hidden" name="id_resep" value="<?= $id_resep; ?>">
                                 <button type="submit" class="tombolkomentar">
-                                    <i class="far fa-comment"></i>
+                                    <i class="fa-solid fa-comment"></i>
                                     <span><?= $row['comments']; ?></span>
                                 </button>
                             </form>
+                        </div>
+                        <div class="kanan_tombol">
                             <form action="../Post/save/save_unsave.php" method="POST" class="formaksi">
                                 <input type="hidden" name="id_resep" value="<?= $id_resep; ?>">
                                 <button type="submit" name="save" class="tomboltandabuku">
@@ -118,15 +155,25 @@ $result = mysqli_query($conn, $sql);
                             </form>
                         </div>
                     </div>
+                </div>
 
-                    <a href="detail.php?id=<?= $row['id_resep']; ?>"
-                        class="judul_kartu"><?= htmlspecialchars($row['judul']); ?></a>
-                        <a href="detail.php?id=<?= $row['id_resep']; ?>" class="deskripsi_kartu">
-                <span><?= htmlspecialchars($row['deskripsi']); ?></span>
+                <div class="judul&desk">
+                <a href="detail.php?id=<?= $row['id_resep']; ?>" class="judul_kartu">
+                    <span class="judul_inner"><?= htmlspecialchars($row['judul']); ?></span>
                 </a>
+                <a href="detail.php?id=<?= $row['id_resep']; ?>" class="deskripsi_kartu">
+                    <span><?= htmlspecialchars($row['deskripsi']); ?></span>
+                </a>
+                </div>
+
+                <div class="ktg&tgl">
+                <a href="search.php?id=<?= $row['id_resep']; ?>" class="ktg_kartu">
+                <span><?= htmlspecialchars($row['kategori']); ?></span>
+                </a> 
                 <a href="detail.php?id=<?= $row['id_resep']; ?>" class="tanggal_kartu">
                 <span><?= htmlspecialchars($row['tanggal_posting']); ?></span>
                 </a>
+                </div>
 
                 <div class="bawah_kartu">
                     <form action="resep.php" method="GET">
@@ -143,11 +190,8 @@ $result = mysqli_query($conn, $sql);
                         </button>
                     </form>
                 </div>
-                </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <p>Resep tidak ditemukan.</p>
-        <?php endif; ?>
+            </div>
+        <?php endwhile; ?>
     </div>
 
 </body>

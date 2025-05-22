@@ -19,12 +19,12 @@ if ($id_user) {
 
     <nav>
         <ul>
-            <?php if ($_SESSION['role'] !== 'USER') { ?>
+            <?php if ($_SESSION['kategori'] !== 'USER') { ?>
                 <li><a href="../ADMIN/home.php"><i class="fas fa-arrow-left"></i></a></li>
                 <?php } else { ?>
                     <li><a href="../USER/home.php"><i class="fas fa-home"></i></a></li>
            <?php } ?>
-            <?php if ($_SESSION['role'] !== 'USER') { ?>
+            <?php if ($_SESSION['kategori'] !== 'USER') { ?>
                 <li><a href="../ADMIN/search.php"><i class="fas fa-compass"></i></a></li>
                 <?php } else { ?>
                     <li><a href="../USER/search.php"><i class="fas fa-compass"></i></a></li>

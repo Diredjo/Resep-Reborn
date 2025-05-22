@@ -3,7 +3,8 @@ include '../include/session.php';
 include '../include/db.php';
 
 $user_id = $_SESSION['user_id'];
-$user_result = mysqli_query($conn, "SELECT username FROM tabel_user WHERE id_user = $user_id");
+$user_result = mysqli_query($conn, "SELECT username, fotoprofil, kategori
+                                    FROM tabel_user WHERE id_user = $user_id");
 $user = mysqli_fetch_assoc($user_result);
 
 $sqlTopResep = "SELECT * FROM tabel_resep ORDER BY RAND() LIMIT 3";
@@ -20,11 +21,12 @@ $by = match ($urutan) {
     default => 'ORDER BY RAND()',
 };
 
-$query = "SELECT r.id_resep, r.judul, r.deskripsi, r.tanggal_posting, r.kategori, r.foto, 
+$query = "SELECT r.id_resep, r.judul, r.deskripsi, r.tanggal_posting, r.kategori, r.foto, r.bg, u.username, u.fotoprofil, 
                  COALESCE(s.jml, 0) AS likes,
                  COALESCE(k.jml, 0) AS comments,
                  COALESCE(b.jml, 0) AS bookmarks
           FROM tabel_resep r
+          LEFT JOIN tabel_user u ON r.id_user = u.id_user
           LEFT JOIN (SELECT id_resep, COUNT(*) AS jml FROM tabel_suka GROUP BY id_resep) s ON r.id_resep = s.id_resep
           LEFT JOIN (SELECT id_resep, COUNT(*) AS jml FROM tabel_komentar GROUP BY id_resep) k ON r.id_resep = k.id_resep
           LEFT JOIN (SELECT id_resep, COUNT(*) AS jml FROM tabel_bookmark GROUP BY id_resep) b ON r.id_resep = b.id_resep
@@ -76,7 +78,7 @@ $result = mysqli_query($conn, $query);
                 <li><a href="home.php">Beranda</a></li>
                 <li><a href="../about.php">Tentang</a></li>
                 <li><a href="search.php">Jelajahi</a></li>
-                <li><a href="profiladmin.php">Profil</a></li>
+                <li><a href="profil.php">Profil</a></li>
                 <li><a href="../akun/logout.php">Logout</a></li>
             </ul>
         </div>
@@ -114,16 +116,16 @@ $result = mysqli_query($conn, $query);
         <h2>Pilihan buat kamu</h2>
         <div class="topresep">
             <?php while ($row = mysqli_fetch_assoc($topResepResult)): ?>
-                <div class="kartu">
+                <div class="topkartu">
                     <img src="../Post/uploads/<?= htmlspecialchars($row['foto']); ?>"
-                    alt="<?= htmlspecialchars($row['judul']); ?>" class="foto_kartu">
+                        alt="<?= htmlspecialchars($row['judul']); ?>" class="foto_kartu">
                     <a href="detail.php?id=<?= $row['id_resep']; ?>"
-                    class="judul_kartu"><?= htmlspecialchars($row['judul']); ?></a>
+                        class="judul_kartu"><?= htmlspecialchars($row['judul']); ?></a>
                 </div>
-                <?php endwhile; ?>
+            <?php endwhile; ?>
         </div>
     </section>
-    
+
     <div class="jelajahi-header">
         <h2>Jelajahi</h2>
         <form method="GET" class="sort-form">
@@ -135,31 +137,31 @@ $result = mysqli_query($conn, $query);
                 <option value="lama" <?= ($_GET['urutan'] ?? '') === 'lama' ? 'selected' : '' ?>>Terlama</option>
                 <option value="acak" <?= ($_GET['urutan'] ?? '') === 'acak' ? 'selected' : '' ?>>Acak</option>
                 <option value="suka" <?= ($_GET['urutan'] ?? '') === 'suka' ? 'selected' : '' ?>>Paling Disukai
-                    </option>
-                    <option value="komen" <?= ($_GET['urutan'] ?? '') === 'komen' ? 'selected' : '' ?>>Sering Dikomentari
-                        </option>
-                        <option value="tandai" <?= ($_GET['urutan'] ?? '') === 'tandai' ? 'selected' : '' ?>>Banyak Disimpan
-                            </option>
+                </option>
+                <option value="komen" <?= ($_GET['urutan'] ?? '') === 'komen' ? 'selected' : '' ?>>Sering Dikomentari
+                </option>
+                <option value="tandai" <?= ($_GET['urutan'] ?? '') === 'tandai' ? 'selected' : '' ?>>Banyak Disimpan
+                </option>
             </select>
         </form>
     </div>
-    
+
     <div class="gridresep" id="resepContainer">
         <?php while ($row = mysqli_fetch_assoc($result)): ?>
             <?php
             $id_resep = $row['id_resep'];
-            
+
             $cek = mysqli_query($conn, "SELECT * FROM tabel_bookmark WHERE id_resep = '$id_resep' AND id_user = '$user_id'");
             $bookmarked = mysqli_num_rows($cek) > 0;
-            
+
             $queryLike = mysqli_query($conn, "SELECT * FROM tabel_suka WHERE id_resep = $id_resep AND id_user = $user_id");
             $ceklike = mysqli_num_rows($queryLike) > 0;
             ?>
             <div class="kartu" data-title="<?= htmlspecialchars($row['judul']); ?>" data-like="<?= $row['likes']; ?>">
                 <div style="position: relative;">
                     <img src="../Post/uploads/<?= htmlspecialchars($row['foto']); ?>"
-                    alt="<?= htmlspecialchars($row['judul']); ?>" class="foto_kartu">
-                    
+                        alt="<?= htmlspecialchars($row['judul']); ?>" class="foto_kartu">
+
                     <div class="aksi_atas tombolresep">
                         <div class="kiri_tombol">
                             <form action="../Post/suka/like_unlike.php" method="POST" class="formaksi">
@@ -197,21 +199,21 @@ $result = mysqli_query($conn, $query);
                 </div>
 
                 <div class="judul&desk">
-                <a href="detail.php?id=<?= $row['id_resep']; ?>" class="judul_kartu">
-                    <span class="judul_inner"><?= htmlspecialchars($row['judul']); ?></span>
-                </a>
-                <a href="detail.php?id=<?= $row['id_resep']; ?>" class="deskripsi_kartu">
-                    <span><?= htmlspecialchars($row['deskripsi']); ?></span>
-                </a>
+                    <a href="detail.php?id=<?= $row['id_resep']; ?>" class="judul_kartu">
+                        <span class="judul_inner"><?= htmlspecialchars($row['judul']); ?></span>
+                    </a>
+                    <a href="detail.php?id=<?= $row['id_resep']; ?>" class="deskripsi_kartu">
+                        <span><?= htmlspecialchars($row['deskripsi']); ?></span>
+                    </a>
                 </div>
 
-                <div class="ktg&tgl">
-                <a href="search.php?id=<?= $row['id_resep']; ?>" class="ktg_kartu">
-                <span><?= htmlspecialchars($row['kategori']); ?></span>
-                </a> 
-                <a href="detail.php?id=<?= $row['id_resep']; ?>" class="tanggal_kartu">
-                <span><?= htmlspecialchars($row['tanggal_posting']); ?></span>
-                </a>
+                <div class="ktg-tgl">
+                    <a href="search.php?id=<?= $row['id_resep']; ?>" class="ktg_kartu">
+                        <span><?= htmlspecialchars($row['kategori']); ?></span>
+                    </a>
+                    <a href="detail.php?id=<?= $row['id_resep']; ?>" class="tanggal_kartu">
+                        <span><?= htmlspecialchars($row['tanggal_posting']); ?></span>
+                    </a>
                 </div>
 
                 <div class="bawah_kartu">
