@@ -1,7 +1,7 @@
-
 <?php
 session_start();
 include '../include/db.php';
+
 $error = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -9,17 +9,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     $query_login = "SELECT id_user, password, kategori FROM tabel_user WHERE username = '$username'";
-    $result_login = mysqli_query($conn, $query_login);
+    $result_login = mysqli_query($koneksi, $query_login);
 
     if ($row_login = mysqli_fetch_assoc($result_login)) {
         if (password_verify($password, $row_login['password'])) {
             $_SESSION['user_id'] = $row_login['id_user'];
             $_SESSION['kategori'] = strtoupper($row_login['kategori']);
-            if ($row_login['kategori'] === 'admin') {
-                header("Location: ../ADMIN/home.php");
-            } else {
-                header("Location: ../USER/home.php");
-            }
+            header("Location: ../dashboard/pencarian.php");
             exit;
         } else {
             $error = "Password salah!";
@@ -45,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Selamat datang kembali! Senang melihatmu lagi 😊</p>
         </div>
         <?php if (!empty($error)) : ?>
-            <div class="notif-error"><?= $error ?></div>
+            <div class="notif-error"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
         <form action="login.php" method="POST" class="formulir">
             <input type="text" name="username" placeholder="Nama Pengguna" class="kotak-input" required>
@@ -56,5 +52,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </section>
 </body>
 </html>
-
-            

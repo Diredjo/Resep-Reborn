@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Semua data harus diisi!";
     } else {
         $check_query = "SELECT * FROM tabel_user WHERE username = '$username' OR email = '$email'";
-        $check_result = mysqli_query($conn, $check_query);
+        $check_result = mysqli_query($koneksi, $check_query);
 
         if (mysqli_num_rows($check_result) > 0) {
             $error = "Username atau email sudah terdaftar!";
@@ -23,10 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $insert_query = "INSERT INTO tabel_user (username, email, password, kategori)
                              VALUES ('$username', '$email', '$hashed_password', '$kategori')";
-            if (mysqli_query($conn, $insert_query)) {
+            if (mysqli_query($koneksi, $insert_query)) {
                 $success = "Registrasi berhasil! Silakan login.";
             } else {
-                $error = "Gagal mendaftar: " . mysqli_error($conn);
+                $error = "Gagal mendaftar: " . mysqli_error($koneksi);
             }
         }
     }
@@ -67,7 +67,7 @@ session_start();
             <input type="password" name="password" placeholder="Kata Sandi" class="kotak-input" required>
             <select name="kategori" class="kotak-input" required>
                 <option value="user">User</option>
-                <option value="admin">Admin</option>
+                <option value="admin" disabled>Admin</option>
             </select>
             <button type="submit" class="tombol-utama">Daftar</button>
             <p class="tautan">Sudah punya akun? <a href="login.php">Masuk</a></p>
