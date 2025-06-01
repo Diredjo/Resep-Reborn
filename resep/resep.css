@@ -1,3 +1,11 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #1a1a1a;
+    color: #eee;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -23,12 +31,28 @@
     color: rgb(245, 245, 245);
     border: none;
     padding: 10px 0px 91vh;
-    border: none;
     border-radius: 5px;
     cursor: pointer;
     z-index: 1000;
 }
 
+.konten {
+    margin-top: 10px;
+    margin-left: 370px;
+    margin-right: 20px;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    width: calc(100% - 365px);
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.konten.collapsed {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+}
 
 .logo {
     top: 0;
@@ -36,7 +60,6 @@
     height: auto;
     margin-left: 10px;
     margin-bottom: -20px;
-    /* object-fit: cover; */
 }
 
 .navigasi {
@@ -56,15 +79,6 @@
     font-size: 25px;
 }
 
-.SK {
-    display: block;
-    font-size: 16px !important;
-    font-weight: 300 !important;
-    color: #777 !important;
-    margin-left: 28px;
-    text-decoration: underline !important;
-}
-
 .navigasi a.active {
     background: none;
     font-weight: 600;
@@ -72,7 +86,6 @@
     background-size: 100% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-
     background-clip: text;
     color: transparent;
     transition: background 0.4s ease, text-shadow 0.4s ease;
@@ -82,12 +95,19 @@
     background: linear-gradient(to right, #ffcc33, #f20069);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-
     background-clip: text;
     color: transparent;
-
     text-shadow: 0 0 6px rgba(255, 128, 128, 0.6);
     transition: background 0.4s ease, text-shadow 0.4s ease;
+}
+
+.SK {
+    display: block;
+    font-size: 16px !important;
+    font-weight: 300 !important;
+    color: #777 !important;
+    margin-left: 28px;
+    text-decoration: underline !important;
 }
 
 /* ==== FORM RESEP FANCY ==== */
@@ -153,6 +173,12 @@
     gap: 10px;
 }
 
+.langkah-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 .langkah-item input {
     width: 100%;
     padding: 10px;
@@ -190,45 +216,7 @@
     border-radius: 6px;
     padding: 4px 8px;
     font-size: 14px;
-    cursor: pointer;
 }
-
-.langkah-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-/* ==== DETAIL UI DESAIN ==== */
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #1a1a1a;
-    color: #eee;
-}
-
-
-.konten {
-    margin-top: 10px;
-    margin-left: 370px;
-    margin-right: 20px;
-    padding: 20px;
-    background-color: #333;
-    /* bisa disesuaikan warna sesuai tema resep */
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    width: calc(100% - 365px);
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.konten.collapsed {
-    margin-left: 50px;
-    width: calc(100% - 50px);
-}
-
 
 .judulresep {
     font-size: 32px;
@@ -293,8 +281,6 @@ body {
     line-height: 1.6;
 }
 
-/* Reuse .kotak-bahan-alat yang sudah ada */
-
 .kotak-bahan-alat .kotak {
     background-color: #2a2a2a;
     padding: 15px;
@@ -319,8 +305,6 @@ body {
     margin-bottom: 10px;
     color: #ff9800;
 }
-
-/* ==== DETAIL KHUSUS ==== */
 
 .foto-resep {
     width: 100%;

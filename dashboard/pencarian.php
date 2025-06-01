@@ -93,10 +93,14 @@ function getDefaultAvatar($userId, $defaultAvatars)
         </div>
 
         <form class="searchcont" action="search.php" method="get">
-            <img src="../Foto/LogoPutih.png" alt="Resep Reborn" class="logosearch">
-            <input type="text" class="pencarian" placeholder="<?= $randomPlaceholder ?>" name="q" required>
-            <button class="tombol-cari" type="submit"><i class="fa-solid fa-wand-sparkles"></i></button>
+            <img src="../Foto/Logomiring.png" alt="Resep Reborn" class="logosearch">
+
+            <div class="search-row">
+                <input type="text" class="pencarian" placeholder="<?= $randomPlaceholder ?>" name="q" required>
+                <button class="tombol-cari" type="submit"><i class="fa-solid fa-wand-sparkles"></i></button>
+            </div>
         </form>
+
 
 
         <h2 class="judulbagian"><i class="fa-solid fa-fire" style="margin-right: 8px;"></i> Terbaru</h2>
@@ -178,14 +182,29 @@ function getDefaultAvatar($userId, $defaultAvatars)
                 </div>
             </div>
         </div>
-        </div>
+    </div>
+    </div>
+
+    <footer class="footer" id="footer">
+        <div class="footer-wrapper">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <h2>Olah bersama kami</h2>
+                    <p>© 1995 Resep Reborn. All rights reserved.</p>
+                </div>
+                <div class="footer-right">
+                    <div class="social-icons">
+                        <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="icon"><i class="fab fa-figma"></i></a>
+                    </div>
+                </div>
             </div>
+        </div>
+    </footer>
 
-        <footer>
-            <p>&copy; 2025 Resep Reborn</p>
-        </footer>
-
-        <?php include '../include/animasiloding/loadingjs.php' ?>
+    <?php include '../include/animasiloding/loadingjs.php' ?>
 
 </body>
 

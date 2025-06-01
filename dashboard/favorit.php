@@ -4,6 +4,23 @@ include '../include/session.php';
 include '../include/animasiloding/loadingcss.php';
 
 $halaman = 'Favorit.php';
+
+$defaultAvatars = [
+    'default.png',
+    'Koki.png',
+    'Petani.png',
+    'Ahli.png',
+    'Foodie.png'
+];
+
+
+function getDefaultAvatar($userId, $defaultAvatars)
+{
+    $index = $userId % count($defaultAvatars);
+    return $defaultAvatars[$index];
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -32,35 +49,35 @@ $halaman = 'Favorit.php';
   </div>
 
   <div class="konten" id="konten">
-    <h2>Akun yang saya sukai</h2>
+    <h2>Akun yang Saya Ikuti</h2>
     <div class="bagian">
       <div class="kumpulan-profil">
         <?php
-        $pengguna_disukai = mysqli_query(
+        $akun_diikuti = mysqli_query(
           $koneksi,
-          "SELECT DISTINCT u.id_user, u.username, u.fotoprofil
-           FROM tabel_user u
-           INNER JOIN tabel_resep r ON u.id_user = r.id_user
-           INNER JOIN tabel_suka s ON s.id_resep = r.id_resep
-           WHERE s.id_user = $user_id
-           GROUP BY u.id_user
-           LIMIT 5"
+          "SELECT u.id_user, u.username, u.fotoprofil
+       FROM tabel_follow f
+       INNER JOIN tabel_user u ON u.id_user = f.id_diikuti
+       WHERE f.id_pengikut = $user_id
+       GROUP BY u.id_user"
         );
 
-        while ($akun = mysqli_fetch_assoc($pengguna_disukai)) {
-          $foto = $akun['fotoprofil'] !== '' ? $akun['fotoprofil'] : 'default.png';
+        while ($akun = mysqli_fetch_assoc($akun_diikuti)) {
+          $foto = !empty($akun['fotoprofil']) ? $akun['fotoprofil'] : getDefaultAvatar($akun['id_user'], $defaultAvatars);
+
           echo "<div class='kartupengguna'>
-                  <img src='../uploads/profil/{$foto}' alt='{$akun['username']}'>
-                  <div>{$akun['username']}</div>
-                </div>";
+              <img src='../uploads/profil/{$foto}' alt='{$akun['username']}'>
+              <div>{$akun['username']}</div>
+            </div>";
         }
         ?>
       </div>
     </div>
 
+
     <h2>Resep yang saya like</h2>
     <div class="bagian">
-      <div class="kumpulan-kartu">
+      <div class="kumpulan-kartu-wrap">
         <?php
         $resep_disukai = mysqli_query(
           $koneksi,

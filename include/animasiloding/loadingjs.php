@@ -23,18 +23,19 @@
         document.body.classList.add('transitioning');
         setTimeout(() => {
           window.location.href = href;
-        }, 100); // waktu efek sebelum pindah halaman
+        }, 100); //waktu 
       }
     });
   });
 
 
-  //  buat sidebar
   const sidebar = document.getElementById("sidebar");
   const konten = document.getElementById("konten");
+  const footer = document.getElementById("footer");
 
   function toggleSidebar() {
     sidebar.classList.toggle("collapsed");
     konten.classList.toggle("collapsed");
+    footer.classList.toggle("collapsed");
   }
 </script>

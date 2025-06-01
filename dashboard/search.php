@@ -1,7 +1,7 @@
 <?php
 include '../include/db.php';
 include '../include/session.php';
-include '../include/animasiloding/loadingjs.php';
+include '../include/animasiloding/loadingcss.php';
 
 $hasilResep = [];
 $hasilUser = [];
@@ -41,6 +41,20 @@ $placeholders = [
     "Resep dari sihir!"
 ];
 $randomPlaceholder = $placeholders[array_rand($placeholders)];
+
+$defaultAvatars = [
+    'default.png',
+    'Koki.png',
+    'Petani.png',
+    'Ahli.png',
+    'Foodie.png'
+];
+
+function getDefaultAvatar($userId, $defaultAvatars)
+{
+    $index = $userId % count($defaultAvatars);
+    return $defaultAvatars[$index];
+}
 ?>
 
 <!DOCTYPE html>
@@ -71,11 +85,15 @@ $randomPlaceholder = $placeholders[array_rand($placeholders)];
 
     <div class="konten" id="konten">
         <div class="header">
-            <a href="../resep/upload.php" class="tombol-upload">+ Upload Resep</a>
+            <a href="../resep/upload.php" class="tombol-upload">Tulis Resep <i class="fa-solid fa-feather" style="margin-left: 8px;"></i></a>
             <?php
             $userQuery = mysqli_query($koneksi, "SELECT * FROM tabel_user WHERE id_user = '$user_id' LIMIT 1");
             $user = mysqli_fetch_assoc($userQuery);
-            $fotoProfil = !empty($user['fotoprofil']) ? $user['fotoprofil'] : getDefaultAvatar($user['id_user'], $defaultAvatars);
+            if (!empty($user['fotoprofil'])) {
+                $fotoProfil = $user['fotoprofil'];
+            } else {
+                $fotoProfil = getDefaultAvatar($user['id_user'], $defaultAvatars);
+            }
             $fotoProfilEncoded = urlencode($fotoProfil);
             ?>
             <a href="profil.php">
@@ -83,11 +101,15 @@ $randomPlaceholder = $placeholders[array_rand($placeholders)];
             </a>
         </div>
 
-        <form method="get" action="search.php" class="searchcont">
-            <img src="../Foto/LogoPutih.png" alt="Resep Reborn" class="logosearch">
-            <input type="text" class="pencarian" placeholder="<?= $randomPlaceholder ?>" name="q" value="<?= htmlspecialchars($keyword) ?>">
-            <button class="tombol-cari" type="submit"><i class="fa-solid fa-wand-sparkles"></i></button>
+        <form class="searchcont" action="search.php" method="get">
+            <img src="../Foto/Logomiring.png" alt="Resep Reborn" class="logosearch">
+
+            <div class="search-row">
+                <input type="text" class="pencarian" placeholder="<?= $randomPlaceholder ?>" name="q" required>
+                <button class="tombol-cari" type="submit"><i class="fa-solid fa-wand-sparkles"></i></button>
+            </div>
         </form>
+
 
         <?php if ($keyword): ?>
             <h2 class="judulbagian">Pengguna yang ditemukan:</h2>
@@ -105,7 +127,7 @@ $randomPlaceholder = $placeholders[array_rand($placeholders)];
                         </div>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <p style="color:#aaa;">Hmm... gak ada pengguna yang cocok buat “<strong><?= htmlspecialchars($keyword) ?></strong>” 😢</p>
+                    <p style="color:#aaa; margin-left: 10px;">Hmm... gak ada pengguna yang cocok buat “<strong><?= htmlspecialchars($keyword) ?></strong>” 😢</p>
                 <?php endif; ?>
             </div>
 
@@ -125,8 +147,23 @@ $randomPlaceholder = $placeholders[array_rand($placeholders)];
         <?php endif; ?>
     </div>
 
-    <footer>
-        <p>Olah bersama kami! | Customer Support: support@resepreborn.id</p>
+    <footer class="footer" id="footer">
+        <div class="footer-wrapper">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <h2>Olah bersama kami</h2>
+                    <p>© 1995 Resep Reborn. All rights reserved.</p>
+                </div>
+                <div class="footer-right">
+                    <div class="social-icons">
+                        <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="icon"><i class="fab fa-figma"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <?php include '../include/animasiloding/loadingjs.php' ?>

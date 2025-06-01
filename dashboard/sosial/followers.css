@@ -1,0 +1,27 @@
+.daftar-followers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.follower-card {
+    width: 160px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #fff;
+    transition: transform 0.2s;
+}
+
+.follower-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+}
+
+.follower-card:hover {
+    transform: scale(1.05);
+}
