@@ -27,11 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Masuk - Resep Reborn</title>
-    <link rel="stylesheet" href="../css/akun.css">
+    <link rel="stylesheet" href="akun.css">
 </head>
+
 <body class="latar">
     <div class="overlay-darken"></div>
     <section class="bungkus-masuk">
@@ -51,4 +53,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </section>
 </body>
+
 </html>

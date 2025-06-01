@@ -1,6 +1,7 @@
 <?php
 include '../include/db.php';
 include '../include/session.php';
+include '../include/animasiloding/loadingcss.php';
 
 $resep = mysqli_query($koneksi, "SELECT * FROM tabel_resep ORDER BY tanggal_posting DESC LIMIT 10");
 $uploader = mysqli_query($koneksi, "SELECT * FROM tabel_user ORDER BY RAND() LIMIT 10");
@@ -46,7 +47,8 @@ function getDefaultAvatar($userId, $defaultAvatars)
     <title>Dashboard - Resep Reborn</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
     <!-- <style>
         .kartupengguna-img {
             width: 60px;
@@ -63,10 +65,10 @@ function getDefaultAvatar($userId, $defaultAvatars)
         <button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-arrows-left-right-to-line"></i></button>
         <img src="../Foto/Logoputih.png" alt="Resep Reborn" class="logo">
         <ul class="navigasi">
-            <li><a href="Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search"></i> Pencarian</a></li>
-            <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart"></i> Favorit</a></li>
-            <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark"></i> Bookmark</a></li>
-            <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user"></i> Profil</a></li>
+            <li><a href="Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search" style="margin-right: 5px;"></i> Pencarian</a></li>
+            <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
+            <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
+            <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
             <li><a href="../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
         </ul>
         <a href="sk.html" class="SK">Baca soal Syarat & Ketentuan Kebijakaan Privasi</a>
@@ -74,7 +76,7 @@ function getDefaultAvatar($userId, $defaultAvatars)
 
     <div class="konten" id="konten">
         <div class="header">
-            <a href="../Post/resep/upload.php" class="tombol-upload">+ Upload Resep</a>
+            <a href="../resep/upload.php" class="tombol-upload">Tulis Resep <i class="fa-solid fa-feather" style="margin-left: 8px;"></i></a>
             <?php
             $userQuery = mysqli_query($koneksi, "SELECT * FROM tabel_user WHERE id_user = '$user_id' LIMIT 1");
             $user = mysqli_fetch_assoc($userQuery);
@@ -97,23 +99,25 @@ function getDefaultAvatar($userId, $defaultAvatars)
         </form>
 
 
-        <h2 class="judulbagian">Terbaru</h2>
+        <h2 class="judulbagian"><i class="fa-solid fa-fire" style="margin-right: 8px;"></i> Terbaru</h2>
         <div class="bagian">
             <div class="kumpulan-kartu">
                 <?php
                 while ($row = mysqli_fetch_assoc($resep)) {
                     $fotoEncoded = urlencode($row['foto']);
                     $judulSafe = htmlspecialchars($row['judul']);
-                    echo "<div class='karturesep'>
-                          <img src='../uploads/$fotoEncoded' alt='$judulSafe'>
-                          <div class='judulresep'>$judulSafe</div>
-                          </div>";
+                    $idResep = $row['id_resep']; // pastiin kolom id ada di tabel
+                    echo "<a href='../resep/detail.php?id=$idResep' class='karturesep'>
+                      <img src='../uploads/$fotoEncoded' alt='$judulSafe'>
+                      <div class='judulresep'>$judulSafe</div>
+                  </a>";
                 }
                 ?>
             </div>
         </div>
 
-        <h2 class="judulbagian">Rekomendasi Uploader</h2>
+
+        <h2 class="judulbagian"><i class="fa-solid fa-user-check" style="margin-right: 8px;"></i> Rekomendasi Uploader</h2>
         <div class="bagian">
             <div class="kumpulan-profil">
                 <?php
@@ -127,19 +131,21 @@ function getDefaultAvatar($userId, $defaultAvatars)
                     $fotoEncoded = urlencode($foto);
                     $usernameSafe = htmlspecialchars($user['username']);
                     $bioSafe = htmlspecialchars($user['bio']);
+                    $userId = $user['id_user']; // Ambil id_user untuk URL
 
-                    echo "<div class='kartupengguna'>
-                <img src='../uploads/profil/$fotoEncoded' class='kartupengguna-img' alt='$usernameSafe'>
-                <div>$usernameSafe</div>
-                <p class='kartupengguna-bio'>$bioSafe</p>
-              </div>";
+                    echo "<a href='profil.php?id_user=$userId' class='kartupengguna-link'>
+                    <div class='kartupengguna'>
+                        <img src='../uploads/profil/$fotoEncoded' class='kartupengguna-img' alt='$usernameSafe'>
+                        <div class='judulpengguna'>$usernameSafe</div>
+                        <p class='kartupengguna-bio'>$bioSafe</p>
+                    </div>
+                  </a>";
                 }
                 ?>
             </div>
-
         </div>
 
-        <h2 class="judulbagian">Pilihan buat mu</h2>
+        <h2 class="judulbagian"><i class="fa-solid fa-utensils" style="margin-right: 8px;"></i> Pilihan buat mu</h2>
         <div class="bagian">
             <div class="kumpulan-kartu">
                 <?php
@@ -172,21 +178,14 @@ function getDefaultAvatar($userId, $defaultAvatars)
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+            </div>
 
-    <footer>
-        <p>&copy; 2025 Resep Reborn</p>
-    </footer>
+        <footer>
+            <p>&copy; 2025 Resep Reborn</p>
+        </footer>
 
-    <script>
-        const sidebar = document.getElementById("sidebar");
-        const konten = document.getElementById("konten");
-
-        function toggleSidebar() {
-            sidebar.classList.toggle("collapsed");
-            konten.classList.toggle("collapsed");
-        }
-    </script>
+        <?php include '../include/animasiloding/loadingjs.php' ?>
 
 </body>
 

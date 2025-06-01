@@ -1,6 +1,7 @@
 <?php
 include '../include/db.php';
 include '../include/session.php';
+include '../include/animasiloding/loadingcss.php';
 
 $query = mysqli_query($koneksi, "SELECT * FROM tabel_user WHERE id_user = $user_id");
 $user = mysqli_fetch_assoc($query);
@@ -34,6 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $error = isset($error) ? $error : "Gagal memperbarui profil.";
   }
 }
+
+$halaman = 'profil.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -42,8 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <title>Edit Profil</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
   <style>
     .form-edit {
       background-color: #2a2a2a;
@@ -101,18 +106,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
   <div class="sidebar" id="sidebar">
     <button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-arrows-left-right-to-line"></i></button>
-    <img src="../Foto/Logocompact.png" alt="Resep Reborn" class="logo">
+    <img src="../Foto/Logoputih.png" alt="Resep Reborn" class="logo">
     <ul class="navigasi">
-      <li><a href="Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search"></i> Pencarian</a></li>
-      <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart"></i> Favorit</a></li>
-      <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark"></i> Bookmark</a></li>
-      <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user"></i> Profil</a></li>
+      <li><a href="Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search" style="margin-right: 5px;"></i> Pencarian</a></li>
+      <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
+      <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
+      <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
       <li><a href="../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
     </ul>
     <a href="sk.html" class="SK">Baca soal Syarat & Ketentuan Kebijakaan Privasi</a>
   </div>
 
-  <div class="konten">
+  <div class="konten" id="konten">
     <h2>Edit Profil</h2>
 
     <form class="form-edit" method="post" enctype="multipart/form-data">
@@ -134,15 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
   </div>
 
-  <script>
-    const sidebar = document.getElementById("sidebar");
-    const konten = document.getElementById("konten");
-
-    function toggleSidebar() {
-      sidebar.classList.toggle("collapsed");
-      konten.classList.toggle("collapsed");
-    }
-  </script>
+  <?php include '../include/animasiloding/loadingjs.php' ?>
 
 </body>
 

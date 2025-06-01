@@ -1,6 +1,7 @@
 <?php
-include '../../include/db.php';
-include '../../include/session.php';
+include '../include/db.php';
+include '../include/session.php';
+include '../include/animasiloding/loadingcss.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $judul = mysqli_real_escape_string($koneksi, $_POST['judul']);
@@ -10,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipe = 'Makanan'; // default
     $video = mysqli_real_escape_string($koneksi, $_POST['video']);
 
-    // Gabung semua langkah jadi 1 teks dengan nomor urut
+  
     $langkah_arr = $_POST['langkah'] ?? [];
     $langkah = '';
     foreach ($langkah_arr as $index => $isi) {
@@ -21,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Upload foto
     $foto = $_FILES['foto']['name'];
     $lokasi = $_FILES['foto']['tmp_name'];
-    $tujuan = '../../uploads/' . $foto;
+    $tujuan = '../uploads/' . $foto;
     move_uploaded_file($lokasi, $tujuan);
 
     $insert = mysqli_query($koneksi, "INSERT INTO tabel_resep 
@@ -29,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         VALUES ($user_id, '$judul', '$deskripsi', '$bahan\n\nAlat: $alat', '$langkah', '$foto', '$video', '$tipe')");
 
     if ($insert) {
-        header("Location: ../../dashboard/profil.php");
+        header("Location: ../dashboard/profil.php");
         exit;
     } else {
         $error = "Gagal menyimpan resep.";
@@ -42,23 +43,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Upload Resep</title>
-    <link rel="stylesheet" href="../../css/dashboard.css">
-    <link rel="stylesheet" href="../../css/resep.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">F
+    <link rel="stylesheet" href="../dashboard/style.css">
+    <link rel="stylesheet" href="resep.css">
 </head>
 
 <body>
-    <div class="sidebar">
-        <div class="logo">Resep<br>Reborn</div>
+    <div class="sidebar" id="sidebar">
+        <button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-arrows-left-right-to-line"></i></button>
+        <img src="../Foto/Logoputih.png" alt="Resep Reborn" class="logo">
         <ul class="navigasi">
-            <li><a href="../../dashboard/pencarian.php">Pencarian</a></li>
-            <li><a href="favorit.php">Favorit</a></li>
-            <li><a href="bookmark.php">Bookmark</a></li>
-            <li><a href="profil.php">Profil</a></li>
-            <li><a href="../akun/logout.php">Logout</a></li>
+            <li><a href="../dashboard/Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search" style="margin-right: 5px;"></i> Pencarian</a></li>
+            <li><a href="../dashboard/Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
+            <li><a href="../dashboard/Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
+            <li><a href="../dashboard/Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
+            <li><a href="../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
         </ul>
+        <a href="sk.html" class="SK">Baca soal Syarat & Ketentuan Kebijakaan Privasi</a>
     </div>
 
-    <div class="konten">
+    <div class="konten" id="konten">
         <h2>Upload Resep</h2>
         <form class="form-resep-fancy" method="post" enctype="multipart/form-data">
             <?php if (isset($error)) echo "<div class='error'>$error</div>"; ?>
@@ -102,6 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit" class="tombol-simpan">Simpan Resep</button>
         </form>
     </div>
+
+<?php include '../include/animasiloding/loadingjs.php' ?>
 
     <script>
         function updatePlaceholderLangkah() {

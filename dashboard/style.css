@@ -1,17 +1,17 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background-image: url(../Foto/backgroundlandpage.jpg);
+  background-image: url(../Foto/backgroundlandpage2.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   /* position: relative; */
   color: #fff;
-  height: 100vh;
 }
 
 body::before {
   content: "";
+  background-size: cover;
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -27,6 +27,7 @@ body * {
 
 .sidebar {
   position: fixed;
+  z-index: 9998;
   top: 0;
   width: 310px;
   height: 100vh;
@@ -95,7 +96,7 @@ body * {
 .navigasi a.active {
   background: none;
   font-weight: 600;
-  background: linear-gradient(to right, #ffcc33 30%, #f20069);
+  background: linear-gradient(to right, #ffcc33 70%, #f20069);
   background-size: 100% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -106,14 +107,13 @@ body * {
 }
 
 .navigasi a.active i {
-  background: linear-gradient(to right, #ffcc33, #f20069);
+  background: white;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 
   background-clip: text;
   color: transparent;
 
-  text-shadow: 0 0 6px rgba(255, 128, 128, 0.6);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.473);
   transition: background 0.4s ease, text-shadow 0.4s ease;
 }
 
@@ -129,11 +129,11 @@ body * {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none; /* Biar gak ada underline di <a> */
+  text-decoration: none;
+  /* Biar gak ada underline di <a> */
   background: linear-gradient(to right, #ffcc33, #f20069);
   border: none;
-  height: 35px;
-  width: 160px;
+  padding: 0 15px 0;
   color: white;
   border-radius: 10px;
   font-size: 1rem;
@@ -176,9 +176,7 @@ body * {
   background-color: #555;
   font-weight: 700;
   color: #ffffff;
-  width: 400px;
-  height: 40px;
-  padding: 10px;
+  padding: 20px 100px 20px 20px;
   border-radius: 40px;
   border: 2px solid #fff;
   font-size: 1rem;
@@ -189,6 +187,7 @@ body * {
 
 .pencarian:focus {
   outline: none;
+  background-color: #444;
   border: 2px solid #fff;
   box-shadow: 0 0 8px 4px;
   position: relative;
@@ -211,7 +210,8 @@ body * {
 }
 
 .tombol-cari {
-  background: #666; /* warna abu sebelum hover */
+  background: #666;
+  /* warna abu sebelum hover */
   color: #ffffff;
   width: 65px;
   height: 65px;
@@ -234,13 +234,32 @@ body * {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
 }
+
+/* Matiin efek autofill browser */
+.pencarian:-webkit-autofill,
+.pencarian:-webkit-autofill:hover,
+.pencarian:-webkit-autofill:focus,
+.pencarian:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #444 inset !important;
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Pastikan ini juga menang jika gak autofill tapi user ngetik */
+.pencarian {
+  background-color: #444 !important;
+  color: #fff !important;
+}
+
 
 
 
@@ -248,9 +267,9 @@ body * {
 
 .konten {
   margin-top: 10px;
-  margin-left: 365px;
+  margin-left: 370px;
   margin-right: 20px;
-  right: 10px;
+  right: 13px;
   padding: 20px;
   background-color: #333;
   border-radius: 10px;
@@ -263,10 +282,13 @@ body * {
 }
 
 .konten.collapsed {
-  margin-left: 50px;
+  margin-left: 55px;
   width: calc(100% - 50px);
   transform: translateX(0);
 }
+
+
+
 
 
 .judulbagian {
@@ -346,32 +368,32 @@ body * {
 
 .kartupengguna {
   background-color: #222;
-  border: 2px solid transparent; /* penting: harus transparan */
+  border: 2px solid transparent;
   border-image: linear-gradient(to top, #ffcc33, #f20069) 1;
   border-radius: 30px;
-  padding: 30px 20px 50px;
-  width: 120px;
+  padding: 30px 20px 0px;
+  min-width: 150px;
+  min-height: 200px;
   flex-shrink: 0;
   text-align: center;
-  color: #fff;
   font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-
-  /* trik biar radius-nya ikut */
-  -webkit-mask-image: radial-gradient(white, white);
-  mask-image: radial-gradient(white, white);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 
 .kartupengguna-img {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   display: block;
   margin: 0 auto 10px auto;
   border: 3px solid #fff;
   background-color: #444;
+}
+
+.judulpengguna {
+  text-decoration: none;
 }
 
 .kartupengguna-bio {
@@ -417,7 +439,8 @@ body * {
 
 .kumpulan-kartu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* Responsive columns */
   gap: 15px;
   margin-top: 15px;
   padding: 0 16px;
@@ -428,17 +451,19 @@ body * {
   display: block;
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   overflow: hidden;
-  margin-top: 16px !important; /* supaya gak nempel ke atas */
-  scroll-margin-top: 96px !important; /* kalau pakai anchor/scrollIntoView */
+  margin-top: 16px !important;
+  /* supaya gak nempel ke atas */
+  scroll-margin-top: 96px !important;
+  /* kalau pakai anchor/scrollIntoView */
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .karturesep-scroll:hover {
   transform: scale(1.02);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
 }
 
 /* Gambar resep */
@@ -488,10 +513,21 @@ body * {
 
 footer {
   text-align: center;
+  margin: 10px 10px 0px 360px;
   padding: 20px;
   font-size: 14px;
+  border-radius: 10px 10px 0 0;
   background-color: #111;
   color: #777;
+  z-index: -1;
+  box-shadow:
+    0 -15px 20px rgba(0, 0, 0, 0.4),
+    /* Atas */
+    100px 0 20px rgba(0, 0, 0, 0.2),
+    /* Kanan */
+    -100px 0 20px rgba(0, 0, 0, 0.2);
+  /* Kiri */
+  ;
 }
 
 /* profil */

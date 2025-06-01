@@ -1,18 +1,30 @@
 <?php
 include '../include/db.php';
 include '../include/session.php';
+include '../include/animasiloding/loadingjs.php';
 
-$hasil = [];
+$hasilResep = [];
+$hasilUser = [];
 $keyword = '';
 
 if (isset($_GET['q']) && $_GET['q'] !== '') {
     $keyword = mysqli_real_escape_string($koneksi, $_GET['q']);
-    $hasil = mysqli_query($koneksi, "
+
+    // Pencarian Resep
+    $hasilResep = mysqli_query($koneksi, "
         SELECT * FROM tabel_resep 
         WHERE judul LIKE '%$keyword%' 
         OR deskripsi LIKE '%$keyword%' 
         OR bahan LIKE '%$keyword%'
         ORDER BY tanggal_posting DESC
+    ");
+
+    // Pencarian User
+    $hasilUser = mysqli_query($koneksi, "
+        SELECT * FROM tabel_user 
+        WHERE username LIKE '%$keyword%' 
+        OR bio LIKE '%$keyword%'
+        ORDER BY username ASC
     ");
 }
 
@@ -29,17 +41,18 @@ $placeholders = [
     "Resep dari sihir!"
 ];
 $randomPlaceholder = $placeholders[array_rand($placeholders)];
-
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
     <meta charset="UTF-8">
-    <title>Pencarian Resep</title>
+    <title>Pencarian Resep & Pengguna</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -47,10 +60,10 @@ $randomPlaceholder = $placeholders[array_rand($placeholders)];
         <button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-arrows-left-right-to-line"></i></button>
         <img src="../Foto/Logoputih.png" alt="Resep Reborn" class="logo">
         <ul class="navigasi">
-            <li><a href="Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search"></i> Pencarian</a></li>
-            <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart"></i> Favorit</a></li>
-            <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark"></i> Bookmark</a></li>
-            <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user"></i> Profil</a></li>
+            <li><a href="Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search" style="margin-right: 5px;"></i> Pencarian</a></li>
+            <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
+            <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
+            <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
             <li><a href="../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
         </ul>
         <a href="sk.html" class="SK">Baca soal Syarat & Ketentuan Kebijakaan Privasi</a>
@@ -58,15 +71,11 @@ $randomPlaceholder = $placeholders[array_rand($placeholders)];
 
     <div class="konten" id="konten">
         <div class="header">
-            <a href="../Post/resep/upload.php" class="tombol-upload">+ Upload Resep</a>
+            <a href="../resep/upload.php" class="tombol-upload">+ Upload Resep</a>
             <?php
             $userQuery = mysqli_query($koneksi, "SELECT * FROM tabel_user WHERE id_user = '$user_id' LIMIT 1");
             $user = mysqli_fetch_assoc($userQuery);
-            if (!empty($user['fotoprofil'])) {
-                $fotoProfil = $user['fotoprofil'];
-            } else {
-                $fotoProfil = getDefaultAvatar($user['id_user'], $defaultAvatars);
-            }
+            $fotoProfil = !empty($user['fotoprofil']) ? $user['fotoprofil'] : getDefaultAvatar($user['id_user'], $defaultAvatars);
             $fotoProfilEncoded = urlencode($fotoProfil);
             ?>
             <a href="profil.php">
@@ -74,19 +83,38 @@ $randomPlaceholder = $placeholders[array_rand($placeholders)];
             </a>
         </div>
 
-        <form method="get" action="pencarian.php" class="searchcont" method="get">
+        <form method="get" action="search.php" class="searchcont">
             <img src="../Foto/LogoPutih.png" alt="Resep Reborn" class="logosearch">
-            <input type="text" class="pencarian" placeholder="<?= $randomPlaceholder ?>" name="q" value="<?= htmlspecialchars($keyword) ?>" class="pencarian">
+            <input type="text" class="pencarian" placeholder="<?= $randomPlaceholder ?>" name="q" value="<?= htmlspecialchars($keyword) ?>">
             <button class="tombol-cari" type="submit"><i class="fa-solid fa-wand-sparkles"></i></button>
         </form>
 
         <?php if ($keyword): ?>
-            <h2>Ketemu!</h2>
+            <h2 class="judulbagian">Pengguna yang ditemukan:</h2>
+            <div class="kumpulan-profil">
+                <?php if (mysqli_num_rows($hasilUser) > 0): ?>
+                    <?php while ($user = mysqli_fetch_assoc($hasilUser)): ?>
+                        <?php
+                        $foto = !empty($user['fotoprofil']) ? $user['fotoprofil'] : getDefaultAvatar($user['id_user'], $defaultAvatars);
+                        $fotoEncoded = urlencode($foto);
+                        $usernameSafe = htmlspecialchars($user['username']);
+                        ?>
+                        <div class="kartupengguna">
+                            <img src="../uploads/profil/<?= $fotoEncoded ?>" class="kartupengguna-img" alt="<?= $usernameSafe ?>">
+                            <div><?= $usernameSafe ?></div>
+                        </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p style="color:#aaa;">Hmm... gak ada pengguna yang cocok buat “<strong><?= htmlspecialchars($keyword) ?></strong>” 😢</p>
+                <?php endif; ?>
+            </div>
+
+            <h2 class="judulbagian">Resep yang ditemukan:</h2>
             <div class="kumpulan-kartu-grid">
-                <?php if (mysqli_num_rows($hasil) > 0): ?>
-                    <?php while ($row = mysqli_fetch_assoc($hasil)): ?>
-                        <a href="../Post/resep/detailresep.php?id=<?= $row['id_resep'] ?>" class="karturesep-scroll">
-                            <img src="../uploads/<?= $row['foto'] ?>" alt="<?= $row['judul'] ?>">
+                <?php if (mysqli_num_rows($hasilResep) > 0): ?>
+                    <?php while ($row = mysqli_fetch_assoc($hasilResep)): ?>
+                        <a href="../resep/detail.php?id=<?= $row['id_resep'] ?>" class="karturesep-scroll">
+                            <img src="../uploads/<?= $row['foto'] ?>" alt="<?= htmlspecialchars($row['judul']) ?>">
                             <div class="judulresep"><?= htmlspecialchars($row['judul']) ?></div>
                         </a>
                     <?php endwhile; ?>
@@ -94,7 +122,6 @@ $randomPlaceholder = $placeholders[array_rand($placeholders)];
                     <p style="color:#aaa;">Kayanya mantra resep kamu kurang tepat deh...<br>"<?= htmlspecialchars($keyword) ?>"</p>
                 <?php endif; ?>
             </div>
-
         <?php endif; ?>
     </div>
 
@@ -102,15 +129,7 @@ $randomPlaceholder = $placeholders[array_rand($placeholders)];
         <p>Olah bersama kami! | Customer Support: support@resepreborn.id</p>
     </footer>
 
-    <script>
-        const sidebar = document.getElementById("sidebar");
-        const konten = document.getElementById("konten");
-
-        function toggleSidebar() {
-            sidebar.classList.toggle("collapsed");
-            konten.classList.toggle("collapsed");
-        }
-    </script>
+    <?php include '../include/animasiloding/loadingjs.php' ?>
 
 </body>
 

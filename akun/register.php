@@ -41,7 +41,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <title>Daftar - Resep Reborn</title>
-    <link rel="stylesheet" href="../css/akun.css">
+    <link rel="stylesheet" href="akun.css">
 </head>
 <body class="latar">
     <div class="overlay-darken"></div>

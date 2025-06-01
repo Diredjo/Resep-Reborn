@@ -1,0 +1,187 @@
+
+body.latar {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(90deg, #ff8a00, #e52e71);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: latarGerak 12s ease-in-out infinite alternate;
+  color: #fff;
+  background-image: url('../Foto/backgroundlandpage.jpg');
+  background-size: cover;
+  background-position: center;
+  backdrop-filter: blur(5px);
+}
+
+@keyframes latarGerak {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.overlay-darken {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 15, 0.2);
+  animation: gelapBergelombang 10s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+@keyframes gelapBergelombang {
+  0% { background: rgba(0, 0, 0, 0.8); }
+  30% { background: rgba(0, 0, 0, 0.2); }
+  100% { background: rgba(0, 0, 0, 0.5); }
+}
+
+
+
+.bungkus-masuk, .bungkus-daftar {
+  position: relative;
+  z-index: 1;
+  background: rgba(30, 30, 30, 0.8);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  width: 90%;
+  max-width: 400px;
+  animation: melayang 1.5s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@keyframes melayang {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.salam-masuk, .salam-daftar {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.salam-masuk h1, .salam-daftar h1 {
+  font-size: 24px;
+  color: #fff;
+}
+
+.salam-masuk p, .salam-daftar p {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.logo {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 0.4rem;
+}
+
+.logomiring {
+  width: 370px;
+  height: 68px;
+  margin-bottom: 0.4rem;
+}
+
+.formulir {
+  display: flex;
+  flex-direction: column;
+}
+
+.kotak-input {
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  border: 1px solid #333;
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #eee;
+  transition: all 0.3s ease;
+}
+
+.kotak-input:focus {
+  border: 0.2px;
+  border-color: #ffffff;
+  outline: none;
+  box-shadow: 0 0 8px #ffcc33;
+  background-color: #1f1f1f;
+  animation: shadowmerah 10s linear infinite;
+}
+
+
+@keyframes shadowmerah {
+  0% {
+    box-shadow: 0 0 8px 3px #ffcc33;
+  }
+
+  50% {
+    box-shadow: 0 0 12px 4px #f20069;
+  }
+
+  100% {
+    box-shadow: 0 0 8px 3px #ffcc33;
+  }
+}
+
+.tombol-utama {
+  background: linear-gradient(to right, #ffcc33, #f20069);
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  will-change: transform;
+  transition: background 2s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.tombol-utama:hover {
+  background: linear-gradient(150deg, #ffcc33 40%, #f20069);
+  transform: scale(1.02);
+}
+
+.tautan {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 10px;
+  color: #aaa;
+}
+
+.tautan a {
+  color: #ffcc33;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.tautan a:hover {
+  color: #f20069;
+  text-decoration: underline;
+}
+
+.notif-error {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.notif-sukses {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  text-align: center;
+}

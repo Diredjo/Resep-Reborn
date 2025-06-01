@@ -1,0 +1,372 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    width: 310px;
+    height: 100vh;
+    background-color: #333;
+    padding: 20px;
+    transition: transform 0.3s ease;
+    transform: translateX(0);
+}
+
+.sidebar.collapsed {
+    transform: translateX(-90%);
+}
+
+.toggle-sidebar {
+    display: flex;
+    font-size: 7px;
+    align-items: center;
+    position: fixed;
+    top: 20px;
+    left: 331px;
+    color: rgb(245, 245, 245);
+    border: none;
+    padding: 10px 0px 91vh;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+
+.logo {
+    top: 0;
+    width: 120px;
+    height: auto;
+    margin-left: 10px;
+    margin-bottom: -20px;
+    /* object-fit: cover; */
+}
+
+.navigasi {
+    list-style: none;
+    font-weight: 600;
+    margin-bottom: 70px;
+    margin-left: -10px;
+}
+
+.navigasi li {
+    margin: 15px 0;
+}
+
+.navigasi a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.SK {
+    display: block;
+    font-size: 16px !important;
+    font-weight: 300 !important;
+    color: #777 !important;
+    margin-left: 28px;
+    text-decoration: underline !important;
+}
+
+.navigasi a.active {
+    background: none;
+    font-weight: 600;
+    background: linear-gradient(to right, #ffcc33 70%, #f20069);
+    background-size: 100% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    background-clip: text;
+    color: transparent;
+    transition: background 0.4s ease, text-shadow 0.4s ease;
+}
+
+.navigasi a.active i {
+    background: linear-gradient(to right, #ffcc33, #f20069);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    background-clip: text;
+    color: transparent;
+
+    text-shadow: 0 0 6px rgba(255, 128, 128, 0.6);
+    transition: background 0.4s ease, text-shadow 0.4s ease;
+}
+
+/* ==== FORM RESEP FANCY ==== */
+.form-resep-fancy {
+    background: #2a2a2a;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-resep-fancy input[type="text"],
+.form-resep-fancy textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+}
+
+.media-upload {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.upload-area {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profil-placeholder {
+    flex: 1;
+    background: #444;
+    height: 120px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.kotak-bahan-alat {
+    display: flex;
+    gap: 20px;
+}
+
+.kotak-bahan-alat div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.langkah-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.langkah-item input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 8px;
+}
+
+#tambah-langkah {
+    background: #555;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    width: fit-content;
+}
+
+.tombol-simpan {
+    background: #ff6f00;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.hapus-langkah {
+    margin-left: 10px;
+    background: #aa3333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.langkah-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* ==== DETAIL UI DESAIN ==== */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #1a1a1a;
+    color: #eee;
+}
+
+
+.konten {
+    margin-top: 10px;
+    margin-left: 370px;
+    margin-right: 20px;
+    padding: 20px;
+    background-color: #333;
+    /* bisa disesuaikan warna sesuai tema resep */
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    width: calc(100% - 365px);
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.konten.collapsed {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+}
+
+
+.judulresep {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.topmedia {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.media img {
+    max-width: 400px;
+    max-height: 280px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.uploaderbox {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.foto-profil {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.tombol {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+}
+
+.tombol-follow {
+    background-color: #009688;
+}
+
+.tombol-like {
+    background-color: #e91e63;
+}
+
+.tombol-bookmark {
+    background-color: #3f51b5;
+}
+
+.deskripsidetail {
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Reuse .kotak-bahan-alat yang sudah ada */
+
+.kotak-bahan-alat .kotak {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.kotak-bahan-alat .kotak h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #ff9800;
+}
+
+.kotak-bahan-alat .kotak ul {
+    padding-left: 20px;
+}
+
+.kotak-bahan-alat .kotak ul li {
+    margin-bottom: 8px;
+}
+
+.langkah-section h3 {
+    margin-bottom: 10px;
+    color: #ff9800;
+}
+
+/* ==== DETAIL KHUSUS ==== */
+
+.foto-resep {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.profil-view {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.profil-view .foto-profil {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.deskripsi {
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.langkah-section ol {
+    padding-left: 20px;
+}
+
+.langkah-section li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.hapus-resep {
+    margin-top: 30px;
+    background: #b80000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
