@@ -34,8 +34,8 @@ $halaman = 'Bookmark.php';
     </div>
 
     <div class="konten" id="konten">
+        <h2>Resep yang saya bookmark</h2>
         <div class="bagian">
-            <h2>Resep yang saya bookmark</h2>
             <div class="kumpulan-kartu">
                 <?php
                 $query = "
@@ -55,7 +55,7 @@ $halaman = 'Bookmark.php';
                 }
 
                 if (mysqli_num_rows($hasil) == 0) {
-                    echo "<p style='color:#aaa'>Belum ada resep yang dibookmark.</p>";
+                    echo "<p style='color:#aaa margin-left:100px;'>Belum ada resep yang dibookmark.</p>";
                 }
                 ?>
             </div>

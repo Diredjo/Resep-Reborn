@@ -42,6 +42,7 @@ session_start();
     <meta charset="UTF-8">
     <title>Daftar - Resep Reborn</title>
     <link rel="stylesheet" href="akun.css">
+    <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
 </head>
 <body class="latar">
     <div class="overlay-darken"></div>

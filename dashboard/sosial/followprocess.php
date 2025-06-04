@@ -4,6 +4,7 @@ include '../../include/session.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_diikuti = intval($_POST['id_diikuti']);
+    $id_resep = intval($_POST['id_resep']); // ID resep yang dikirim dari form
     $aksi = isset($_POST['aksi']) ? $_POST['aksi'] : '';
 
     if ($aksi == 'follow') {
@@ -14,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         mysqli_query($koneksi, $query);
     }
 
-    header("Location: ../profil.php?id_user=$id_diikuti");
+    // Redirect ke halaman detail resep berdasarkan id
+    header("Location: ../../resep/detail.php?id=$id_resep");
     exit();
 } else {
     echo "Invalid request.";

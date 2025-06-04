@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
   <link rel="stylesheet" href="../dashboard/style.css">
   <link rel="stylesheet" href="../resep/resep.css">
+  <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
 </head>
 
 <body>

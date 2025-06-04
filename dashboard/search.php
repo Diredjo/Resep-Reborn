@@ -10,7 +10,6 @@ $keyword = '';
 if (isset($_GET['q']) && $_GET['q'] !== '') {
     $keyword = mysqli_real_escape_string($koneksi, $_GET['q']);
 
-    // Pencarian Resep
     $hasilResep = mysqli_query($koneksi, "
         SELECT * FROM tabel_resep 
         WHERE judul LIKE '%$keyword%' 
@@ -19,7 +18,6 @@ if (isset($_GET['q']) && $_GET['q'] !== '') {
         ORDER BY tanggal_posting DESC
     ");
 
-    // Pencarian User
     $hasilUser = mysqli_query($koneksi, "
         SELECT * FROM tabel_user 
         WHERE username LIKE '%$keyword%' 
@@ -62,7 +60,7 @@ function getDefaultAvatar($userId, $defaultAvatars)
 
 <head>
     <meta charset="UTF-8">
-    <title>Pencarian Resep & Pengguna</title>
+    <title>Pencarian - Resep Reborn</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css">

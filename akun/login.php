@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Masuk - Resep Reborn</title>
     <link rel="stylesheet" href="akun.css">
+    <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
 </head>
 
 <body class="latar">

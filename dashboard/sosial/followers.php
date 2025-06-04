@@ -29,6 +29,7 @@ $followers = mysqli_query($koneksi, "
     <link rel="stylesheet" href="followers.css">
     <link rel="stylesheet" href="../style.css"
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="../../LogoPutih.ico" type="image/x-icon">
 </head>
 <body>
     <div class="konten">

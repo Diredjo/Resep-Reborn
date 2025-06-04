@@ -135,19 +135,27 @@ function getDefaultAvatar($userId, $defaultAvatars)
                     $fotoEncoded = urlencode($foto);
                     $usernameSafe = htmlspecialchars($user['username']);
                     $bioSafe = htmlspecialchars($user['bio']);
-                    $userId = $user['id_user']; // Ambil id_user untuk URL
+                    $userId = $user['id_user'];
 
-                    echo "<a href='profil.php?id_user=$userId' class='kartupengguna-link'>
-                    <div class='kartupengguna'>
-                        <img src='../uploads/profil/$fotoEncoded' class='kartupengguna-img' alt='$usernameSafe'>
-                        <div class='judulpengguna'>$usernameSafe</div>
-                        <p class='kartupengguna-bio'>$bioSafe</p>
-                    </div>
-                  </a>";
+                    // Cek apakah ini user yang sedang login
+                    if ($userId == $_SESSION['user_id']) {
+                        $link = "profil.php"; // Ke profil sendiri
+                    } else {
+                        $link = "profil.php?id_user=$userId"; // Ke profil orang lain
+                    }
+
+                    echo "<a href='$link' class='kartupengguna-link'>
+                <div class='kartupengguna'>
+                    <img src='../uploads/profil/$fotoEncoded' class='kartupengguna-img' alt='$usernameSafe'>
+                    <div class='judulpengguna'>$usernameSafe</div>
+                    <p class='kartupengguna-bio'>$bioSafe</p>
+                </div>
+            </a>";
                 }
                 ?>
             </div>
         </div>
+
 
         <h2 class="judulbagian"><i class="fa-solid fa-utensils" style="margin-right: 8px;"></i> Pilihan buat mu</h2>
         <div class="bagian">
@@ -156,32 +164,39 @@ function getDefaultAvatar($userId, $defaultAvatars)
                 while ($row = mysqli_fetch_assoc($masakan)) {
                     $fotoEncoded = urlencode($row['foto']);
                     $judulSafe = htmlspecialchars($row['judul']);
-                    echo "<div class='karturesep'>
+                    echo "<a href='../resep/detail.php?id=$idResep' class='karturesep'><div class='karturesep'>
                           <img src='../uploads/$fotoEncoded' alt='$judulSafe'>
                           <div class='judulresep'>$judulSafe</div>
-                          </div>";
+                          </div></a>";
                 }
                 ?>
             </div>
         </div>
 
         <div class="bagian tentang">
-            <h2>Ketahui lebih banyak tentang Resep Reborn</h2>
+            <h2>Ketahui lebih banyak tentang <br><strong>Resep Reborn</strong></h2>
             <div class="kumpulan-kotak">
                 <div class="kotaktentang">
+                    <i class="fa-solid fa-laptop-code"></i>
                     <h3>Tujuan Website</h3>
-                    <p>Berbagi pengetahuan dan inovasi pangan lokal.</p>
+                    <p>Dibuat guna mengatasi dan menekan angka kasus pembuangan limbah hasil panen</p>
+                    <a href="about/tujuanweb.html">Baca</a>
                 </div>
                 <div class="kotaktentang">
+                    <img src="../foto/fotokreator.jpg" alt="Saqa Pandega">
                     <h3>Kreator</h3>
-                    <p>Resep dari hasil panen yang tidak terpakai.</p>
+                    <p>Siswa kelas 10 SMK Telkom Sidoarjo kejuruan Sistem Informasi Jaringan dan Aplikasi. Jawa Timur Indonesia</p>
+                    <a href="about/kreator.html">Kenalan Yuk!</a>
                 </div>
                 <div class="kotaktentang">
+                    <i class="fa-solid fa-graduation-cap"></i>
                     <h3>Tujuan</h3>
-                    <p>Kolaborasi teknologi dalam pengolahan makanan.</p>
+                    <p>Dibuat guna memenuhi Ujian Kenaikan Level yang menjadi syarat kelulusan kenaikan kelas</p>
+                    <a href="about/about.html">Baca</a>
                 </div>
             </div>
         </div>
+
     </div>
     </div>
 

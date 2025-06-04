@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipe = 'Makanan'; // default
     $video = mysqli_real_escape_string($koneksi, $_POST['video']);
 
-  
+
     $langkah_arr = $_POST['langkah'] ?? [];
     $langkah = '';
     foreach ($langkah_arr as $index => $isi) {
@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $langkah .= "$nomor. " . trim($isi) . "\n";
     }
 
-    // Upload foto
     $foto = $_FILES['foto']['name'];
     $lokasi = $_FILES['foto']['tmp_name'];
     $tujuan = '../uploads/' . $foto;
@@ -45,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Upload Resep</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">F
+    <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
     <link rel="stylesheet" href="../dashboard/style.css">
     <link rel="stylesheet" href="resep.css">
 </head>
@@ -65,6 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="konten" id="konten">
+        <div class="header">
+            <a href="pencarian.php" class="tombol-home"><i class="fa-solid fa-home"></i></a>
+        </div>
+
         <h2>Upload Resep</h2>
         <form class="form-resep-fancy" method="post" enctype="multipart/form-data">
             <?php if (isset($error)) echo "<div class='error'>$error</div>"; ?>
@@ -73,8 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="media-upload">
                 <div class="upload-area">
-                    <label>Upload video atau foto:</label>
-                    <input type="file" name="foto" accept="image/*" required>
+                    <label style="margin-bottom: 5px;">Upload video atau foto:</label>
+                    <label class="upload-label">
+                        <i class="fas fa-upload upload-icon"></i> Upload foto
+                        <input type="file" name="foto" accept="image/*" required>
+                    </label>
+
                     <input type="text" name="video" placeholder="Link video (opsional)">
                 </div>
                 <div class="profil-placeholder">
@@ -84,17 +91,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <textarea name="deskripsi" rows="3" placeholder="Tambahkan deskripsi..."></textarea>
 
+        </form>
+
+        <form class="form-resep-fancy-alat">
             <div class="kotak-bahan-alat">
                 <div>
-                    <label>Bahan</label>
                     <textarea name="bahan" rows="4" placeholder="Tambahkan bahan..." required></textarea>
                 </div>
                 <div>
-                    <label>Alat</label>
                     <textarea name="alat" rows="4" placeholder="Tambahkan alat..."></textarea>
                 </div>
             </div>
+        </form>
 
+        <form class="form-resep-fancy">
             <div class="langkah-section">
                 <label>Langkah-langkah</label>
                 <div id="langkah-container">
@@ -102,14 +112,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="text" name="langkah[]" placeholder="Langkah 1">
                     </div>
                 </div>
-                <button type="button" id="tambah-langkah">+ Tambah urutan</button>
+                <button type="button" id="tambah-langkah"><i class="fa-solid fa-plus"></i></button>
             </div>
 
             <button type="submit" class="tombol-simpan">Simpan Resep</button>
         </form>
     </div>
 
-<?php include '../include/animasiloding/loadingjs.php' ?>
+    <?php include '../include/animasiloding/loadingjs.php' ?>
 
     <script>
         function updatePlaceholderLangkah() {
@@ -130,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             div.className = 'langkah-item';
             div.innerHTML = `
     <input type="text" name="langkah[]" placeholder="Langkah">
-    <button type="button" class="hapus-langkah" onclick="hapusLangkah(this)">❌</button>
+    <button type="button" class="hapus-langkah" onclick="hapusLangkah(this)"><i class="fa-solid fa-xmark"></i></button>
   `;
             container.appendChild(div);
             updatePlaceholderLangkah();
