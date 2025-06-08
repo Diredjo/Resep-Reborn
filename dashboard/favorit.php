@@ -13,14 +13,11 @@ $defaultAvatars = [
   'Foodie.png'
 ];
 
-
 function getDefaultAvatar($userId, $defaultAvatars)
 {
   $index = $userId % count($defaultAvatars);
   return $defaultAvatars[$index];
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -56,49 +53,50 @@ function getDefaultAvatar($userId, $defaultAvatars)
         $akun_diikuti = mysqli_query(
           $koneksi,
           "SELECT u.id_user, u.username, u.fotoprofil
-   FROM tabel_follow f
-   INNER JOIN tabel_user u ON u.id_user = f.id_diikuti
-   WHERE f.id_pengikut = $user_id
-   GROUP BY u.id_user"
+           FROM tabel_follow f
+           INNER JOIN tabel_user u ON u.id_user = f.id_diikuti
+           WHERE f.id_pengikut = $user_id
+           GROUP BY u.id_user"
         );
 
         if (mysqli_num_rows($akun_diikuti) > 0) {
           while ($akun = mysqli_fetch_assoc($akun_diikuti)) {
             $foto = !empty($akun['fotoprofil']) ? $akun['fotoprofil'] : getDefaultAvatar($akun['id_user'], $defaultAvatars);
+            $link_profil = "profil.php?id=" . urlencode($akun['id_user']);
 
-            echo "<div class='kartupengguna'>
-        <img src='../uploads/profil/{$foto}' alt='{$akun['username']}'>
-        <div>{$akun['username']}</div>
-      </div>";
+            echo "<a href='$link_profil' style='text-decoration: none; color: inherit;'>
+                    <div class='kartupengguna' style='cursor: pointer;'>
+                      <img src='../uploads/profil/{$foto}' alt='{$akun['username']}'>
+                      <div>{$akun['username']}</div>
+                    </div>
+                  </a>";
           }
         } else {
           echo "<p style='color:#aaa; margin-left:100px;'>Belum ada akun yang kamu ikuti.</p>";
         }
         ?>
-
       </div>
     </div>
 
-
-    <h2>Resep yang saya like</h2>
+    <h2>Resep yang Saya Sukai</h2>
     <div class="bagian">
       <div class="kumpulan-kartu-wrap">
         <?php
         $resep_disukai = mysqli_query(
           $koneksi,
           "SELECT r.foto, r.judul
-       FROM tabel_resep r
-       INNER JOIN tabel_suka s ON r.id_resep = s.id_resep
-       WHERE s.id_user = $user_id
-       ORDER BY s.tanggal DESC"
+           FROM tabel_resep r
+           INNER JOIN tabel_suka s ON r.id_resep = s.id_resep
+           WHERE s.id_user = $user_id
+           ORDER BY s.tanggal DESC"
         );
 
         if (mysqli_num_rows($resep_disukai) > 0) {
           while ($resep = mysqli_fetch_assoc($resep_disukai)) {
             echo "<div class='karturesep'>
-                <img src='../uploads/{$resep['foto']}' alt='{$resep['judul']}'>
-                <div class='judulresep'>{$resep['judul']}</div>
-              </div>";
+                    <img src='../uploads/{$resep['foto']}' alt='{$resep['judul']}'>
+                    <div class='judulresep'>{$resep['judul']}</div>
+                  </div>";
           }
         } else {
           echo "<p style='color:#aaa; margin-left:100px;'>Belum ada resep yang kamu sukai.</p>";
@@ -106,13 +104,9 @@ function getDefaultAvatar($userId, $defaultAvatars)
         ?>
       </div>
     </div>
-
-  </div>
-  </div>
   </div>
 
-  <?php include '../include/animasiloding/loadingjs.php' ?>
-
+  <?php include '../include/animasiloding/loadingjs.php'; ?>
 </body>
 
 </html>

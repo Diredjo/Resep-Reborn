@@ -195,6 +195,11 @@ body * {
   align-items: center;
 }
 
+.subtitel {
+  margin: -20px 0 20px;
+  color: #dddddd;
+}
+
 .pencarian {
   background-color: #555;
   font-weight: 700;
@@ -296,7 +301,7 @@ body * {
 
 
 .konten {
-  margin-top: 10px;
+  margin-top: -20px;
   margin-left: 370px;
   margin-right: 20px;
   right: 13px;
@@ -690,6 +695,9 @@ margin-bottom: 4px !important;
 
 
 
+
+
+
 /* profil */
 .bagian .kotak-profil {
   padding: 10px 10px 20px;
@@ -704,11 +712,12 @@ margin-bottom: 4px !important;
   position: relative;
 }
 
-.foto-profil {
-  width: 220px;
-  height: 220px;
+.foto-profil-profil {
+  width: auto;
+  aspect-ratio: 1 / 1;
+  height: 200px;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 100%;
   margin-right: 20px;
 }
 
@@ -720,7 +729,7 @@ margin-bottom: 4px !important;
 
 .info-profil h2 {
   margin: 0;
-  font-size: 70px;
+  font-size: 40px;
   font-weight: bolder;
   letter-spacing: -1px;
   top: -40px;
@@ -730,7 +739,7 @@ margin-bottom: 4px !important;
   font-size: 15px;
   color: #ffffff8f;
   font-weight: bold;
-  margin: -10px 10px 2px;
+  margin: -10px 0px 2px;
   top: -40px;
 }
 

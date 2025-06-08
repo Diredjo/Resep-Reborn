@@ -11,28 +11,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipe = 'Makanan'; // default
     $video = mysqli_real_escape_string($koneksi, $_POST['video']);
 
-
+    // Bersihkan langkah tanpa angka
     $langkah_arr = $_POST['langkah'] ?? [];
-    $langkah = '';
-    foreach ($langkah_arr as $index => $isi) {
-        $nomor = $index + 1;
-        $langkah .= "$nomor. " . trim($isi) . "\n";
-    }
+    $langkah_arr_clean = array_filter(array_map('trim', $langkah_arr));
+    $langkah = implode("\n", $langkah_arr_clean);
 
+    // Upload gambar
     $foto = $_FILES['foto']['name'];
     $lokasi = $_FILES['foto']['tmp_name'];
     $tujuan = '../uploads/' . $foto;
-    move_uploaded_file($lokasi, $tujuan);
 
-    $insert = mysqli_query($koneksi, "INSERT INTO tabel_resep 
+    if (move_uploaded_file($lokasi, $tujuan)) {
+        $query = "INSERT INTO tabel_resep 
         (id_user, judul, deskripsi, bahan, langkah, foto, video, tipe)
-        VALUES ($user_id, '$judul', '$deskripsi', '$bahan\n\nAlat: $alat', '$langkah', '$foto', '$video', '$tipe')");
+        VALUES (
+            $user_id, 
+            '$judul', 
+            '$deskripsi', 
+            '$bahan\n\nAlat: $alat', 
+            '$langkah', 
+            '$foto', 
+            '$video', 
+            '$tipe'
+        )";
 
-    if ($insert) {
-        header("Location: ../dashboard/profil.php");
-        exit;
+        $insert = mysqli_query($koneksi, $query);
+
+        if ($insert) {
+            header("Location: ../dashboard/profil.php");
+            exit;
+        } else {
+            $error = "Gagal menyimpan resep. Error: " . mysqli_error($koneksi);
+        }
     } else {
-        $error = "Gagal menyimpan resep.";
+        $error = "Gagal upload foto.";
     }
 }
 ?>
@@ -91,9 +103,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <textarea name="deskripsi" rows="3" placeholder="Tambahkan deskripsi..."></textarea>
 
-        </form>
-
-        <form class="form-resep-fancy-alat">
             <div class="kotak-bahan-alat">
                 <div>
                     <textarea name="bahan" rows="4" placeholder="Tambahkan bahan..." required></textarea>
@@ -102,9 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <textarea name="alat" rows="4" placeholder="Tambahkan alat..."></textarea>
                 </div>
             </div>
-        </form>
 
-        <form class="form-resep-fancy">
             <div class="langkah-section">
                 <label>Langkah-langkah</label>
                 <div id="langkah-container">
@@ -139,9 +146,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const div = document.createElement('div');
             div.className = 'langkah-item';
             div.innerHTML = `
-    <input type="text" name="langkah[]" placeholder="Langkah">
-    <button type="button" class="hapus-langkah" onclick="hapusLangkah(this)"><i class="fa-solid fa-xmark"></i></button>
-  `;
+                <input type="text" name="langkah[]" placeholder="Langkah">
+                <button type="button" class="hapus-langkah" onclick="hapusLangkah(this)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            `;
             container.appendChild(div);
             updatePlaceholderLangkah();
         });

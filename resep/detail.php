@@ -53,6 +53,7 @@ $video_embed = convertToEmbedURL($data['video']);
     <title><?= htmlspecialchars($data['judul']) ?> - Resep Reborn</title>
     <link rel="stylesheet" href="../dashboard/style.css">
     <link rel="stylesheet" href="resep.css">
+    <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -88,6 +89,7 @@ $video_embed = convertToEmbedURL($data['video']);
                 <div id="media-video" class="media-responsif" style="display: <?= $video_embed ? 'block' : 'none' ?>;">
                     <iframe src="<?= htmlspecialchars($video_embed) ?>" frameborder="0" allowfullscreen></iframe>
                 </div>
+                <p class="deskripsi"><?= nl2br(htmlspecialchars($data['deskripsi'])) ?></p>
             </div>
 
             <div class="profil-dan-aksi">
@@ -108,23 +110,24 @@ $video_embed = convertToEmbedURL($data['video']);
                         <a href="../dashboard/like.php?id=<?= $id_resep ?>" class="btn-suka"><i class="fa fa-heart"></i></a>
                         <a href="../dashboard/bookmark.php?id=<?= $id_resep ?>" class="btn-bookmark"><i class="fa fa-bookmark"></i></a>
                     <?php else: ?>
-                        <a href="../dashboard/edit_resep.php?id=<?= $id_resep ?>" class="btn-edit">Edit Resep</a>
+                        <a href="edit.php?id=<?= $id_resep ?>" class="btn-edit">Edit Resep</a>
                     <?php endif; ?>
                 </div>
             </div>
 
         </div>
 
-        <p class="deskripsi"><?= nl2br(htmlspecialchars($data['deskripsi'])) ?></p>
 
-        <div class="kotak-bahan-alat">
-            <div class="kotak-bahan">
-                <h3>Bahan</h3>
-                <p><?= $bahans ?></p>
-            </div>
-            <div class="kotak-alat">
-                <h3>Alat</h3>
-                <p><?= $alat ?: '-' ?></p>
+        <div class="gradient-border">
+            <div class="kotak-bahan-alat">
+                <div class="kotak-bahan">
+                    <h3>Bahan</h3>
+                    <p><?= $bahans ?></p>
+                </div>
+                <div class="kotak-alat">
+                    <h3>Alat</h3>
+                    <p><?= $alat ?: '-' ?></p>
+                </div>
             </div>
         </div>
 
@@ -141,13 +144,13 @@ $video_embed = convertToEmbedURL($data['video']);
 
         <div class="blok-komentar" id="komentar">
             <h3>Komentar</h3>
-            <form id="form-komentar" method="post" action="../dashboard/sosial/komentarprocess.php">
+            <form id="form-komentar" method="post" action="../dashboard/sosial/komentar/komentarprocess.php">
                 <textarea name="komentar" placeholder="Tulis komentarmu..." required></textarea>
                 <input type="hidden" name="id_resep" value="<?= $id_resep ?>">
                 <button type="submit">Kirim</button>
             </form>
             <div id="daftar-komentar">
-                <?php include '../dashboard/sosial/komentar.php'; ?>
+                <?php include '../dashboard/sosial/komentar/komentar.php'; ?>
             </div>
         </div>
     </div>

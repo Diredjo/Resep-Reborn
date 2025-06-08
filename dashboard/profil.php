@@ -90,14 +90,14 @@ $halaman = 'Profil.php';
 
         <div class="bagian">
             <div class="kotak-profil">
-                <img src="../uploads/profil/<?= urlencode($fotoProfil) ?>" alt="Foto Profil" class="foto-profil">
+                <img src="../uploads/profil/<?= urlencode($fotoProfil) ?>" alt="Foto Profil" class="foto-profil-profil">
                 <div class="info-profil">
                     <h2><?= htmlspecialchars($user_dilihat['username']) ?></h2>
                     <h5>ID: <?= htmlspecialchars($user_dilihat['id_user']) ?></h5>
                     <p><?= htmlspecialchars($user_dilihat['bio']) ?></p>
                 </div>
                 <?php if (!$saya_sendiri): ?>
-                    <form action="sosial/followprocess.php" method="POST" style="display:inline;">
+                    <form action="sosial/follow/followprocess.php" method="POST" style="display:inline;">
                         <input type="hidden" name="id_diikuti" value="<?= $lihat_id ?>">
                         <input type="hidden" name="aksi" value="<?= $is_following ? 'unfollow' : 'follow' ?>">
                         <button type="submit" class="tombol-follow" style="background:<?= $is_following ? '#aaa' : 'linear-gradient(to right, #ffcc33, #f20069)' ?>;">
@@ -112,7 +112,7 @@ $halaman = 'Profil.php';
 
             <div class="statistik-profil">
                 <div class="stat">
-                    <a href="sosial/followers.php?id=<?= $lihat_id ?>">
+                    <a href="sosial/follow/followers.php?id=<?= $lihat_id ?>">
                         <strong><?= number_format($jumlah_followers) ?></strong>
                         <span>Pengikut</span>
                     </a>

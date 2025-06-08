@@ -1,7 +1,7 @@
 <?php
-include '../../include/db.php';
-include '../../include/session.php';
-include '../../include/animasiloding/loadingcss.php';
+include '../../../include/db.php';
+include '../../../include/session.php';
+include '../../../include/animasiloding/loadingcss.php';
 
 $lihat_id = isset($_GET['id']) ? intval($_GET['id']) : $user_id;
 $saya_sendiri = ($lihat_id === $user_id);
@@ -27,9 +27,9 @@ $followers = mysqli_query($koneksi, "
     <meta charset="UTF-8">
     <title>Followers - <?= htmlspecialchars($user_dilihat['username']) ?></title>
     <link rel="stylesheet" href="followers.css">
-    <link rel="stylesheet" href="../style.css"
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="../../LogoPutih.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <link rel="shortcut icon" href="../../../LogoPutih.ico" type="image/x-icon">
 </head>
 <body>
     <div class="konten">
@@ -42,7 +42,7 @@ $followers = mysqli_query($koneksi, "
                         $foto = !empty($f['fotoprofil']) ? $f['fotoprofil'] : $defaultAvatars[$f['id_user'] % count($defaultAvatars)];
                     ?>
                     <div class="follower-card">
-                        <img src="../uploads/profil/<?= urlencode($foto) ?>" alt="<?= htmlspecialchars($f['username']) ?>">
+                        <img src="../../../uploads/profil/<?= urlencode($foto) ?>" alt="<?= htmlspecialchars($f['username']) ?>">
                         <a href="Profil.php?id_user=<?= $f['id_user'] ?>"><?= htmlspecialchars($f['username']) ?></a>
                     </div>
                 <?php endwhile; ?>
@@ -52,6 +52,6 @@ $followers = mysqli_query($koneksi, "
         </div>
     </div>
 
-    <?php include '../../include/animasiloding/loadingjs.php' ?>
+    <?php include '../../../include/animasiloding/loadingjs.php' ?>
 </body>
 </html>

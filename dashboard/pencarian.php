@@ -4,7 +4,7 @@ include '../include/session.php';
 include '../include/animasiloding/loadingcss.php';
 
 $resep = mysqli_query($koneksi, "SELECT * FROM tabel_resep ORDER BY tanggal_posting DESC LIMIT 10");
-$uploader = mysqli_query($koneksi, "SELECT * FROM tabel_user ORDER BY RAND() LIMIT 10");
+$uploader = mysqli_query($koneksi, "SELECT * FROM tabel_user ORDER BY RAND() LIMIT 9");
 $masakan = mysqli_query($koneksi, "SELECT * FROM tabel_resep WHERE tipe = 'Makanan' ORDER BY RAND() LIMIT 10");
 
 $placeholders = [
@@ -30,7 +30,6 @@ $defaultAvatars = [
     'Ahli.png',
     'Foodie.png'
 ];
-
 function getDefaultAvatar($userId, $defaultAvatars)
 {
     $index = $userId % count($defaultAvatars);
@@ -73,7 +72,7 @@ function getDefaultAvatar($userId, $defaultAvatars)
         </ul>
         <a href="sk.html" class="SK">Baca soal Syarat & Ketentuan Kebijakaan Privasi</a>
     </div>
-
+\
     <div class="konten" id="konten">
         <div class="header">
             <a href="../resep/upload.php" class="tombol-upload">Tulis Resep <i class="fa-solid fa-feather" style="margin-left: 8px;"></i></a>
@@ -94,6 +93,7 @@ function getDefaultAvatar($userId, $defaultAvatars)
 
         <form class="searchcont" action="search.php" method="get">
             <img src="../Foto/Logomiring.png" alt="Resep Reborn" class="logosearch">
+            <p class="subtitel">From the field to your fork — let the magic begin. ✨</p>
 
             <div class="search-row">
                 <input type="text" class="pencarian" placeholder="<?= $randomPlaceholder ?>" name="q" required>
@@ -212,7 +212,7 @@ function getDefaultAvatar($userId, $defaultAvatars)
                         <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="icon"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="icon"><i class="fab fa-figma"></i></a>
+                        <a href="https://www.figma.com/design/qnYTMMQTLc2etfFqeEDfnj/Resep-Reborn?node-id=0-1&t=Agfkp8wVXwh5nSZF-1" class="icon"><i class="fab fa-figma"></i></a>
                     </div>
                 </div>
             </div>

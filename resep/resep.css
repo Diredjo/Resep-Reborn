@@ -5,109 +5,9 @@ body {
     color: #eee;
 }
 
-/* .sidebar {
-    position: fixed;
-    top: 0;
-    width: 310px;
-    height: 100vh;
-    background-color: #333;
-    padding: 20px;
-    transition: transform 0.3s ease;
-    transform: translateX(0);
-}
 
-.sidebar.collapsed {
-    transform: translateX(-90%);
-}
 
-.toggle-sidebar {
-    display: flex;
-    font-size: 7px;
-    align-items: center;
-    position: fixed;
-    top: 20px;
-    left: 331px;
-    color: rgb(245, 245, 245);
-    border: none;
-    padding: 10px 0px 91vh;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 1000;
-} */
 
-/* .konten {
-    margin-top: 10px;
-    margin-left: 370px;
-    margin-right: 20px;
-    padding: 20px;
-    background-color: #333;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    width: calc(100% - 365px);
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.konten.collapsed {
-    margin-left: 50px;
-    width: calc(100% - 50px);
-}
-
-.logo {
-    top: 0;
-    width: 120px;
-    height: auto;
-    margin-left: 10px;
-    margin-bottom: -20px;
-}
-
-.navigasi {
-    list-style: none;
-    font-weight: 600;
-    margin-bottom: 70px;
-    margin-left: -10px;
-}
-
-.navigasi li {
-    margin: 15px 0;
-}
-
-.navigasi a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 25px;
-}
-
-.navigasi a.active {
-    background: none;
-    font-weight: 600;
-    background: linear-gradient(to right, #ffcc33 70%, #f20069);
-    background-size: 100% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    transition: background 0.4s ease, text-shadow 0.4s ease;
-}
-
-.navigasi a.active i {
-    background: linear-gradient(to right, #ffcc33, #f20069);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    text-shadow: 0 0 6px rgba(255, 128, 128, 0.6);
-    transition: background 0.4s ease, text-shadow 0.4s ease;
-}
-
-.SK {
-    display: block;
-    font-size: 16px !important;
-    font-weight: 300 !important;
-    color: #777 !important;
-    margin-left: 28px;
-    text-decoration: underline !important;
-} */
 
 /* ==== FORM RESEP FANCY ==== */
 .form-resep-fancy {
@@ -335,13 +235,16 @@ input[type="file"] {
   display: flex;
   gap: 10px;
   margin-bottom: 10px;
+  justify-content: center;
 }
 
 .media-switcher button {
   padding: 8px 12px;
   border: none;
   border-radius: 5px;
-  background: #ffcc33;
+  color: white;
+  font-weight: 800;
+  background: #444;
   cursor: pointer;
   font-weight: bold;
 }
@@ -354,7 +257,9 @@ input[type="file"] {
 
 .media-responsif img,
 .media-responsif iframe {
-  width: 100%;
+  width: 500px;
+  object-fit: cover;
+  aspect-ratio: 16 / 9 !important;
   height: auto;
   display: block;
 }
@@ -364,7 +269,7 @@ input[type="file"] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
 .profil-uploader {
@@ -374,6 +279,7 @@ input[type="file"] {
 .foto-profil {
   width: 80px;
   height: 80px;
+  margin-top: 50px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -419,7 +325,7 @@ input[type="file"] {
 }
 
 .btn-edit {
-  background: #2ecc71;
+  background: #414141;
   color: #fff;
   text-align: center;
   text-decoration: none;
@@ -432,30 +338,40 @@ input[type="file"] {
   font-weight: 600;
 }
 
+.gradient-border {
+  background: linear-gradient(135deg, #ffcc33, #f20069);
+  padding: 2px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
 .kotak-bahan-alat {
   display: flex;
-  gap: 20px;
-  font-weight: 700;
-  flex-wrap: wrap;
-  max-width: 800px;
-  margin: 20px auto;
+  gap: 2px;
+  border-radius: 10px;
+  background: linear-gradient(#ffcc33 #f20069);
+  padding:1px;
 }
 
 .kotak-bahan-alat div {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 100px;
-  background: #444;
-  padding: 15px;
-  border-radius: 10px;
+  min-width: 315px;
+  background: #3a3a3a;
+  padding: 12px;
   color: #fff;
+  border-radius: 8px;
 }
 
+
+
 .langkah-section {
+  background-color: #666;
   max-width: 800px;
   margin: 20px auto;
+  padding: 10px 20px;
   color: #fff;
+  border-radius: 10px;
+  
 }
 
 .blok-komentar {
