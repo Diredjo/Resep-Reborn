@@ -40,6 +40,11 @@ function getDefaultAvatar($userId, $defaultAvatars)
       <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
       <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
       <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
+
+      <?php if ($kategori === 'ADMIN'): ?>
+        <li><a href="admin/data.php" class="<?= ($halaman == 'data.php') ? 'active' : '' ?>"><i class="fa-solid fa-chart-line" style="margin-right: 5px;"></i> Admin Panel</a></li>
+      <?php endif; ?>
+
       <li><a href="../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
     </ul>
     <a href="sk.html" class="SK">Baca soal Syarat & Ketentuan Kebijakaan Privasi</a>
@@ -84,19 +89,23 @@ function getDefaultAvatar($userId, $defaultAvatars)
         <?php
         $resep_disukai = mysqli_query(
           $koneksi,
-          "SELECT r.foto, r.judul
-           FROM tabel_resep r
-           INNER JOIN tabel_suka s ON r.id_resep = s.id_resep
-           WHERE s.id_user = $user_id
-           ORDER BY s.tanggal DESC"
+          "SELECT r.id_resep, r.foto, r.judul
+   FROM tabel_resep r
+   INNER JOIN tabel_suka s ON r.id_resep = s.id_resep
+   WHERE s.id_user = $user_id
+   ORDER BY s.tanggal DESC"
         );
+
 
         if (mysqli_num_rows($resep_disukai) > 0) {
           while ($resep = mysqli_fetch_assoc($resep_disukai)) {
-            echo "<div class='karturesep'>
-                    <img src='../uploads/{$resep['foto']}' alt='{$resep['judul']}'>
-                    <div class='judulresep'>{$resep['judul']}</div>
-                  </div>";
+            $link_detail = "../resep/detail.php?id=" . urlencode($resep['id_resep']);
+            echo "<a href='$link_detail' style='text-decoration: none; color: inherit;'>
+        <div class='karturesep' style='cursor: pointer;'>
+          <img src='../uploads/{$resep['foto']}' alt='{$resep['judul']}'>
+          <div class='judulresep'>{$resep['judul']}</div>
+        </div>
+      </a>";
           }
         } else {
           echo "<p style='color:#aaa; margin-left:100px;'>Belum ada resep yang kamu sukai.</p>";

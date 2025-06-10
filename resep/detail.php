@@ -23,6 +23,15 @@ $saya_sendiri = ($id_login == $lihat_id);
 $cek_follow = mysqli_query($koneksi, "SELECT 1 FROM tabel_follow WHERE id_pengikut = $id_login AND id_diikuti = $lihat_id");
 $is_following = mysqli_num_rows($cek_follow) > 0;
 
+$cek_like = mysqli_query($koneksi, "SELECT 1 FROM tabel_suka WHERE id_user = $id_login AND id_resep = $id_resep");
+$is_liked = mysqli_num_rows($cek_like) > 0;
+
+$cek_bookmark = mysqli_query($koneksi, "SELECT 1 FROM tabel_bookmark WHERE id_user = $id_login AND id_resep = $id_resep");
+$is_bookmarked = mysqli_num_rows($cek_bookmark) > 0;
+
+$jumlah_like_query = mysqli_query($koneksi, "SELECT COUNT(*) AS jumlah FROM tabel_suka WHERE id_resep = $id_resep");
+$jumlah_like = mysqli_fetch_assoc($jumlah_like_query)['jumlah'];
+
 $isi_bahan = $data['bahan'];
 $alat = '';
 if (str_contains($isi_bahan, "Alat:")) {
@@ -51,9 +60,10 @@ $video_embed = convertToEmbedURL($data['video']);
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($data['judul']) ?> - Resep Reborn</title>
-    <link rel="stylesheet" href="../dashboard/style.css">
     <link rel="stylesheet" href="resep.css">
+    <link rel="stylesheet" href="../dashboard/style.css">
     <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -63,10 +73,16 @@ $video_embed = convertToEmbedURL($data['video']);
         <button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-arrows-left-right-to-line"></i></button>
         <img src="../Foto/Logoputih.png" alt="Resep Reborn" class="logo">
         <ul class="navigasi">
-            <li><a href="../dashboard/pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search" style="margin-right: 5px;"></i> Pencarian</a></li>
-            <li><a href="../dashboard/Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
-            <li><a href="../dashboard/Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
-            <li><a href="../dashboard/Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
+            <li><a href="../dashboard/pencarian.php"><i class="fa-solid fa-search" style="margin-right: 5px;"></i> Pencarian</a></li>
+            <li><a href="../dashboard/Favorit.php"><i class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
+            <li><a href="../dashboard/Bookmark.php"><i class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
+            <li><a href="../dashboard/Profil.php"><i class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
+
+             <?php if ($kategori === 'ADMIN'): ?>
+                <li><a href="admin/data.php" class="<?= ($halaman == 'data.php') ? 'active' : '' ?>"><i class="fa-solid fa-chart-line" style="margin-right: 5px;"></i> Admin Panel</a></li>
+            <?php endif; ?>
+
+
             <li><a href="../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
         </ul>
         <a href="sk.html" class="SK">Baca soal Syarat & Ketentuan Kebijakaan Privasi</a>
@@ -107,16 +123,23 @@ $video_embed = convertToEmbedURL($data['video']);
                                 <?= $is_following ? 'Berhenti Ikuti' : 'Ikuti' ?>
                             </button>
                         </form>
-                        <a href="../dashboard/like.php?id=<?= $id_resep ?>" class="btn-suka"><i class="fa fa-heart"></i></a>
-                        <a href="../dashboard/bookmark.php?id=<?= $id_resep ?>" class="btn-bookmark"><i class="fa fa-bookmark"></i></a>
+
+                        <a href="../dashboard/sosial/likeprocess.php?id_resep=<?= $id_resep ?>" class="btn-suka">
+                            <i class="fa<?= $is_liked ? 's' : 'r' ?> fa-heart" style="color: <?= $is_liked ? 'red' : 'inherit' ?>;"></i>
+                            <?= $jumlah_like ?>
+                        </a>
+
+                        <a href="../dashboard/sosial/bookmarkprocess.php?id_resep=<?= $id_resep ?>" class="btn-bookmark">
+                            <i class="fa<?= $is_bookmarked ? 's' : 'r' ?> fa-bookmark" style="color: <?= $is_bookmarked ? '#007BFF' : 'inherit' ?>;"></i>
+                        </a>
+
+
                     <?php else: ?>
                         <a href="edit.php?id=<?= $id_resep ?>" class="btn-edit">Edit Resep</a>
                     <?php endif; ?>
                 </div>
             </div>
-
         </div>
-
 
         <div class="gradient-border">
             <div class="kotak-bahan-alat">

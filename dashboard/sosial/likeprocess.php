@@ -1,18 +1,19 @@
 <?php
 include '../../include/db.php';
-include '../..include/session.php';
+include '../../include/session.php';
 
-$id_resep = intval($_POST['id']);
+if (!isset($_GET['id_resep'])) exit("ID resep tidak valid.");
+$id_resep = intval($_GET['id_resep']);
 $id_user = $_SESSION['user_id'];
 
-// Cek apakah sudah like
-$cek = mysqli_query($koneksi, "SELECT * FROM tabel_suka WHERE id_resep = $id_resep AND id_user = $id_user");
+$cek = mysqli_query($koneksi, "SELECT * FROM tabel_suka WHERE id_user = $id_user AND id_resep = $id_resep");
 
 if (mysqli_num_rows($cek) > 0) {
-    mysqli_query($koneksi, "DELETE FROM tabel_suka WHERE id_resep = $id_resep AND id_user = $id_user");
-    echo 'unliked';
+    mysqli_query($koneksi, "DELETE FROM tabel_suka WHERE id_user = $id_user AND id_resep = $id_resep");
 } else {
-    mysqli_query($koneksi, "INSERT INTO tabel_suka (id_resep, id_user) VALUES ($id_resep, $id_user)");
-    echo 'liked';
+    mysqli_query($koneksi, "INSERT INTO tabel_suka (id_user, id_resep) VALUES ($id_user, $id_resep)");
 }
+
+header("Location: ../../resep/detail.php?id=$id_resep");
+exit;
 ?>
