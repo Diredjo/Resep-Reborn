@@ -124,15 +124,16 @@ while ($row = mysqli_fetch_assoc($highlight_query)) {
         <img src="../../Foto/Logoputih.png" alt="Resep Reborn" class="logo" />
         <ul class="navigasi">
             <li><a href="data.php" class="<?= ($halaman == 'data.php') ? 'active' : '' ?>"><i
-                        class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+                        class="fa-solid fa-chart-line" style="margin-right: 5px;"></i> Dashboard</a></li>
             <li><a href="user.php" class="<?= ($halaman == 'user.php') ? 'active' : '' ?>"><i
-                        class="fa-solid fa-users"></i> User</a></li>
+                        class="fa-solid fa-users" style="margin-right: 5px;"></i> User</a></li>
             <li><a href="resep.php" class="<?= ($halaman == 'resep.php') ? 'active' : '' ?>"><i
-                        class="fa-solid fa-book"></i> Resep</a></li>
+                        class="fa-solid fa-book" style="margin-right: 5px;"></i> Resep</a></li>
             <li><a href="highlight_tambah.php" class="<?= ($halaman == 'highlight_tambah.php') ? 'active' : '' ?>"><i
-                        class="fa-solid fa-star"></i> Highlight</a></li>
+                        class="fa-solid fa-star" style="margin-right: 5px;"></i>Highlight</a></li>
+            <li><a href="laporan.php" class="<?= ($halaman == 'laporan.php') ? 'active' : '' ?>"><i class="fa-solid fa-circle-exclamation" style="margin-right: 5px;"></i>Laporan</a></li>
             <li><a href="../Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i
-                        class="fa-solid fa-arrow-left"></i> Kembali</a></li>
+                        class="fa-solid fa-arrow-left" style="margin-right: 5px;"></i> Kembali</a></li>
         </ul>
         <a href="sk.html" class="SK">Syarat & Ketentuan</a>
     </div>

@@ -103,6 +103,32 @@ $halaman = 'Profil.php';
                     <p><?= htmlspecialchars($user_dilihat['bio']) ?></p>
                 </div>
                 <?php if (!$saya_sendiri): ?>
+                    <button id="reportButton" class="btn btn-danger"><i class="fa-solid fa-circle-exclamation"></i></button>
+                    <div id="reportOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000099; z-index:9999;">
+                        <div style="background:white; width:90%; max-width:400px; margin:10% auto; padding:20px; border-radius:10px;">
+                            <h3>Laporkan Profil</h3>
+                            <form id="reportForm">
+                                <label>Alasan:</label>
+                                <select name="alasan" required>
+                                    <option value="">Pilih</option>
+                                    <option value="Spam">Spam</option>
+                                    <option value="Konten Tidak Pantas">Konten Tidak Pantas</option>
+                                    <option value="Penipuan">Penipuan</option>
+                                    <option value="Pelecehan">Pelecehan</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select><br><br>
+
+                                <label>Alasan Tambahan (opsional):</label>
+                                <textarea name="alasan_tambahan" rows="3" style="width:100%;"></textarea><br><br>
+
+                                <input type="hidden" name="id_dilaporkan" value="<?= $user_dilihat['id_user'] ?>">
+                                <input type="hidden" name="id_pelapor" value="<?= $user_id ?>">
+                                <button type="submit" class="btn btn-primary">Kirim Laporan</button>
+                                <button type="button" onclick="toggleReportOverlay()" class="btn btn-secondary">Batal</button>
+                            </form>
+                        </div>
+                    </div>
+
                     <form action="sosial/follow/followprocess.php" method="POST" style="display:inline;">
                         <input type="hidden" name="id_diikuti" value="<?= $lihat_id ?>">
                         <input type="hidden" name="aksi" value="<?= $is_following ? 'unfollow' : 'follow' ?>">
@@ -166,6 +192,30 @@ $halaman = 'Profil.php';
             </div>
         </div>
     </footer>
+
+    <script>
+        function toggleReportOverlay() {
+            const overlay = document.getElementById('reportOverlay');
+            overlay.style.display = (overlay.style.display === 'none') ? 'block' : 'none';
+        }
+
+        document.getElementById('reportButton').addEventListener('click', toggleReportOverlay);
+
+        document.getElementById('reportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('sosial/lapor_profil.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(r => r.text())
+                .then(data => {
+                    alert(data);
+                    toggleReportOverlay();
+                });
+        });
+    </script>
 
     <?php include '../include/animasiloding/loadingjs.php' ?>
 </body>
