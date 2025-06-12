@@ -23,6 +23,7 @@ $followers = mysqli_query($koneksi, "
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Followers - <?= htmlspecialchars($user_dilihat['username']) ?></title>
@@ -31,6 +32,7 @@ $followers = mysqli_query($koneksi, "
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
     <link rel="shortcut icon" href="../../../LogoPutih.ico" type="image/x-icon">
 </head>
+
 <body>
     <div class="konten">
         <h2>Followers <?= $saya_sendiri ? 'Saya' : htmlspecialchars($user_dilihat['username']) ?></h2>
@@ -38,12 +40,24 @@ $followers = mysqli_query($koneksi, "
             <?php if (mysqli_num_rows($followers) > 0): ?>
                 <?php while ($f = mysqli_fetch_assoc($followers)): ?>
                     <?php
-                        $defaultAvatars = ['default.png', 'Koki.png', 'Petani.png', 'Ahli.png', 'Foodie.png'];
-                        $foto = !empty($f['fotoprofil']) ? $f['fotoprofil'] : $defaultAvatars[$f['id_user'] % count($defaultAvatars)];
+                    $defaultAvatars = ['default.png', 'Koki.png', 'Petani.png', 'Ahli.png', 'Foodie.png'];
+                    $foto = !empty($f['fotoprofil']) ? $f['fotoprofil'] : $defaultAvatars[$f['id_user'] % count($defaultAvatars)];
                     ?>
                     <div class="follower-card">
-                        <img src="../../../uploads/profil/<?= urlencode($foto) ?>" alt="<?= htmlspecialchars($f['username']) ?>">
-                        <a href="Profil.php?id_user=<?= $f['id_user'] ?>"><?= htmlspecialchars($f['username']) ?></a>
+                        <img src="../../../uploads/profil/<?= urlencode($foto) ?>"
+                            alt="<?= htmlspecialchars($f['username']) ?>">
+                        <div class="follower-info">
+                            <a href="Profil.php?id_user=<?= $f['id_user'] ?>"
+                                class="follower-username"><?= htmlspecialchars($f['username']) ?></a>
+
+                            <?php if ($saya_sendiri): ?>
+                                <form method="POST" action="hapus_follower.php" onsubmit="return confirm('Hapus follower ini?')"
+                                    class="hapus-form">
+                                    <input type="hidden" name="id_pengikut" value="<?= $f['id_user'] ?>">
+                                    <button type="submit" class="hapus-btn">Hapus</button>
+                                </form>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
@@ -54,4 +68,5 @@ $followers = mysqli_query($koneksi, "
 
     <?php include '../../../include/animasiloding/loadingjs.php' ?>
 </body>
+
 </html>

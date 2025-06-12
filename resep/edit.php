@@ -1,4 +1,3 @@
-@@ -0,0 +1,117 @@
 <?php
 include '../include/db.php';
 include '../include/session.php';
@@ -18,7 +17,6 @@ if (mysqli_num_rows($query) == 0) {
 
 $data = mysqli_fetch_assoc($query);
 
-// Pisahkan bahan dan alat
 $isi_bahan = $data['bahan'];
 $alat = '';
 if (str_contains($isi_bahan, "Alat:")) {
@@ -38,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $bahan_final = $bahan_input . "\n\nAlat: " . $alat_input;
 
-  // Cek apakah upload foto baru
   if (!empty($_FILES['foto']['name'])) {
     $foto = $_FILES['foto']['name'];
     $lokasi = $_FILES['foto']['tmp_name'];
@@ -68,18 +65,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
   <link rel="stylesheet" href="../dashboard/style.css">
   <link rel="stylesheet" href="../resep/resep.css">
-  <link rel="shortcut icon" href="../LogoPutih.ico" type="image/x-icon">
 </head>
 
 <body>
   <div class="sidebar" id="sidebar">
-    <button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-arrows-left-right-to-line"></i></button>
+    <button class="toggle-sidebar" onclick="toggleSidebar()"><i
+        class="fa-solid fa-arrows-left-right-to-line"></i></button>
     <img src="../Foto/Logoputih.png" alt="Resep Reborn" class="logo">
     <ul class="navigasi">
-      <li><a href="../dashboard/Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search" style="margin-right: 5px;"></i> Pencarian</a></li>
-      <li><a href="../dashboard/Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
-      <li><a href="../dashboard/Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
-      <li><a href="../dashboard/Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
+      <li><a href="../dashboard/Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i
+            class="fa-solid fa-search" style="margin-right: 5px;"></i> Pencarian</a></li>
+      <li><a href="../dashboard/Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i
+            class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
+      <li><a href="../dashboard/Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i
+            class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
+      <li><a href="../dashboard/Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i
+            class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
       <li><a href="../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
     </ul>
     <a href="sk.html" class="SK">Baca soal Syarat & Ketentuan Kebijakaan Privasi</a>
@@ -89,14 +90,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2>Edit Resep</h2>
 
     <form class="form-resep-fancy" method="post" enctype="multipart/form-data">
-      <?php if (isset($error)) echo "<div class='error'>$error</div>"; ?>
+      <?php if (isset($error))
+        echo "<div class='error'>$error</div>"; ?>
 
       <input type="text" name="judul" value="<?= htmlspecialchars($data['judul']) ?>" required>
 
-      <input type="file" name="foto" accept="image/*">
-      <input type="text" name="video" value="<?= htmlspecialchars($data['video']) ?>" placeholder="Link video (opsional)">
+      <?php if (!empty($data['foto'])): ?>
+        <div class="preview-foto" style="margin-bottom: 10px;">
+          <label>Foto saat ini:</label><br>
+          <img src="../uploads/<?= htmlspecialchars($data['foto']) ?>" alt="Foto Resep"
+            style="max-width: 200px; border-radius: 8px; display: block; margin-top: 5px;">
+        </div>
+      <?php endif; ?>
 
-      <textarea name="deskripsi" rows="3" placeholder="Deskripsi..."><?= htmlspecialchars($data['deskripsi']) ?></textarea>
+      <div class="form-group" style="margin-bottom: 15px;">
+        <label for="foto">Ganti Foto (opsional)</label>
+        <input type="file" name="foto" id="foto" accept="image/*" style="display: block; margin-top: 5px;">
+      </div>
+
+
+      <label for="video">Link Video YouTube (opsional)</label>
+      <input type="text" name="video" id="video" value="<?= htmlspecialchars($data['video']) ?>"
+        placeholder="https://www.youtube.com/watch?v=...">
+
+
+      <textarea name="deskripsi" rows="3"
+        placeholder="Deskripsi..."><?= htmlspecialchars($data['deskripsi']) ?></textarea>
 
       <div class="kotak-bahan-alat">
         <div>

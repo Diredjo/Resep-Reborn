@@ -11,12 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipe = 'Makanan'; // default
     $video = mysqli_real_escape_string($koneksi, $_POST['video']);
 
-    // Bersihkan langkah tanpa angka
     $langkah_arr = $_POST['langkah'] ?? [];
     $langkah_arr_clean = array_filter(array_map('trim', $langkah_arr));
     $langkah = implode("\n", $langkah_arr_clean);
 
-    // Upload gambar
     $foto = $_FILES['foto']['name'];
     $lokasi = $_FILES['foto']['tmp_name'];
     $tujuan = '../uploads/' . $foto;
@@ -72,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li><a href="../dashboard/Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
 
              <?php if ($kategori === 'ADMIN'): ?>
-                <li><a href="admin/data.php" class="<?= ($halaman == 'data.php') ? 'active' : '' ?>"><i class="fa-solid fa-chart-line" style="margin-right: 5px;"></i> Admin Panel</a></li>
+                <li><a href="admin/data.php" class="<?= ($halaman == '../dashboard/admin/data.php') ? 'active' : '' ?>"><i class="fa-solid fa-chart-line" style="margin-right: 5px;"></i> Admin Panel</a></li>
             <?php endif; ?>
             
             <li><a href="../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
@@ -82,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="konten" id="konten">
         <div class="header">
-            <a href="pencarian.php" class="tombol-home"><i class="fa-solid fa-home"></i></a>
+            <a href="../dashboard/pencarian.php" class="tombol-home"><i class="fa-solid fa-home"></i></a>
         </div>
 
         <h2>Upload Resep</h2>

@@ -2,16 +2,25 @@
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+    margin-top: 20px;
+    justify-content: flex-start;
 }
 
 .follower-card {
     width: 160px;
-    padding: 12px;
-    text-align: center;
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 12px;
-    background: #fff;
-    transition: transform 0.2s;
+    padding: 12px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.follower-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .follower-card img {
@@ -20,8 +29,104 @@
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 8px;
+    border: 2px solid #ccc;
+}
+
+.follower-username {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 6px;
+    text-decoration: none;
+}
+
+.follower-username:hover {
+    text-decoration: underline;
+}
+
+.hapus-form {
+    margin: 0;
+}
+
+.hapus-btn {
+    padding: 5px 10px;
+    font-size: 13px;
+    background-color: #f44336;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.hapus-btn:hover {
+    background-color: #d32f2f;
+}
+
+.daftar-followers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: flex-start;
+}
+
+.follower-card {
+    width: 160px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #3d3d3d;
+    border-radius: 12px;
+    background: #292929;
+    transition: transform 0.2s ease-in-out;
 }
 
 .follower-card:hover {
     transform: scale(1.05);
+}
+
+.follower-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+    border: 2px solid #ddd;
+}
+
+.follower-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.follower-username {
+    font-size: 14px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.follower-username:hover {
+    text-decoration: underline;
+}
+
+.hapus-form {
+    margin-top: 6px;
+}
+
+.hapus-btn {
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.hapus-btn:hover {
+    background-color: #c62828;
 }

@@ -5,56 +5,50 @@ include '../include/animasiloding/loadingcss.php';
 
 $hasilResep = [];
 $hasilUser = [];
-$keyword = '';
+$keyword = isset($_GET['q']) ? trim($_GET['q']) : '';
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'baru';
 
-if (isset($_GET['q']) && $_GET['q'] !== '') {
-    $keyword = mysqli_real_escape_string($koneksi, $_GET['q']);
+$order = "ORDER BY tanggal_posting DESC";
+if ($sort === 'lama') {
+    $order = "ORDER BY tanggal_posting ASC";
+} elseif ($sort === 'judul') {
+    $order = "ORDER BY judul ASC";
+}
 
+if ($keyword !== '') {
+    $safeKeyword = mysqli_real_escape_string($koneksi, $keyword);
     $hasilResep = mysqli_query($koneksi, "
         SELECT * FROM tabel_resep 
-        WHERE judul LIKE '%$keyword%' 
-        OR deskripsi LIKE '%$keyword%' 
-        OR bahan LIKE '%$keyword%'
-        ORDER BY tanggal_posting DESC
+        WHERE judul LIKE '%$safeKeyword%' 
+        OR deskripsi LIKE '%$safeKeyword%' 
+        OR bahan LIKE '%$safeKeyword%'
+        $order
     ");
 
     $hasilUser = mysqli_query($koneksi, "
         SELECT * FROM tabel_user 
-        WHERE username LIKE '%$keyword%' 
-        OR bio LIKE '%$keyword%'
+        WHERE username LIKE '%$safeKeyword%' 
+        OR bio LIKE '%$safeKeyword%'
         ORDER BY username ASC
     ");
+} elseif (isset($_GET['show']) && $_GET['show'] === 'all') {
+    $hasilResep = mysqli_query($koneksi, "SELECT * FROM tabel_resep $order");
 }
 
 $placeholders = [
-    "Abrakadabra, jadi resep!",
-    "Cari resep ajaib?",
-    "Sulap bahanmu yuk!",
-    "Bahanmu = keajaiban!",
-    "Mantra resep hari ini?",
-    "Hokuspokus, jadi menu!",
-    "Bahan sisa? Gass cari!",
-    "Sim salabim... enak!",
-    "Sulap dapurmu~",
-    "Resep dari sihir!"
+    "Abrakadabra, jadi resep!", "Cari resep ajaib?", "Sulap bahanmu yuk!", "Bahanmu = keajaiban!",
+    "Mantra resep hari ini?", "Hokuspokus, jadi menu!", "Bahan sisa? Gass cari!", "Sim salabim... enak!",
+    "Sulap dapurmu~", "Resep dari sihir!"
 ];
 $randomPlaceholder = $placeholders[array_rand($placeholders)];
 
-$defaultAvatars = [
-    'default.png',
-    'Koki.png',
-    'Petani.png',
-    'Ahli.png',
-    'Foodie.png'
-];
-
+$defaultAvatars = ['default.png', 'Koki.png', 'Petani.png', 'Ahli.png', 'Foodie.png'];
 function getDefaultAvatar($userId, $defaultAvatars)
 {
     $index = $userId % count($defaultAvatars);
     return $defaultAvatars[$index];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -69,84 +63,81 @@ function getDefaultAvatar($userId, $defaultAvatars)
 
 <body>
     <div class="sidebar" id="sidebar">
-        <button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-arrows-left-right-to-line"></i></button>
+        <button class="toggle-sidebar" onclick="toggleSidebar()"><i
+                class="fa-solid fa-arrows-left-right-to-line"></i></button>
         <img src="../Foto/Logoputih.png" alt="Resep Reborn" class="logo">
         <ul class="navigasi">
-            <li><a href="Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search" style="margin-right: 5px;"></i> Pencarian</a></li>
-            <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
-            <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
-            <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
+            <li><a href="Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-search" style="margin-right: 5px;"></i> Pencarian</a></li>
+            <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-heart" style="margin-right: 5px;"></i> Favorit</a></li>
+            <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Bookmark</a></li>
+            <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-user" style="margin-right: 5px;"></i> Profil</a></li>
 
-             <?php if ($kategori === 'ADMIN'): ?>
-                <li><a href="admin/data.php" class="<?= ($halaman == 'data.php') ? 'active' : '' ?>"><i class="fa-solid fa-chart-line" style="margin-right: 5px;"></i> Admin Panel</a></li>
+            <?php if ($kategori === 'ADMIN'): ?>
+                <li><a href="admin/data.php" class="<?= ($halaman == 'data.php') ? 'active' : '' ?>"><i
+                            class="fa-solid fa-chart-line" style="margin-right: 5px;"></i> Admin Panel</a></li>
             <?php endif; ?>
-            
+
             <li><a href="../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
         </ul>
         <a href="sk.html" class="SK">Baca soal Syarat & Ketentuan Kebijakaan Privasi</a>
     </div>
 
     <div class="konten" id="konten">
-        <div class="header">
-            <a href="../resep/upload.php" class="tombol-upload">Tulis Resep <i class="fa-solid fa-feather" style="margin-left: 8px;"></i></a>
+        <div class="header"  style="margin-top: 20px;">
+            <a href="../resep/upload.php" class="tombol-upload">Tulis Resep <i class="fa-solid fa-feather"></i></a>
             <?php
             $userQuery = mysqli_query($koneksi, "SELECT * FROM tabel_user WHERE id_user = '$user_id' LIMIT 1");
             $user = mysqli_fetch_assoc($userQuery);
-            if (!empty($user['fotoprofil'])) {
-                $fotoProfil = $user['fotoprofil'];
-            } else {
-                $fotoProfil = getDefaultAvatar($user['id_user'], $defaultAvatars);
-            }
-            $fotoProfilEncoded = urlencode($fotoProfil);
+            $fotoProfil = !empty($user['fotoprofil']) ? $user['fotoprofil'] : getDefaultAvatar($user['id_user'], $defaultAvatars);
             ?>
             <a href="profil.php">
-                <img src="../uploads/profil/<?= $fotoProfilEncoded ?>" alt="Foto Profil" class="foto-profil-head">
+                <img src="../uploads/profil/<?= urlencode($fotoProfil) ?>" alt="Foto Profil" class="foto-profil-head">
             </a>
         </div>
 
         <form class="searchcont" action="search.php" method="get">
-            <img src="../Foto/Logomiring.png" alt="Resep Reborn" class="logosearch">
-
             <div class="search-row">
-                <input type="text" class="pencarian" placeholder="<?= $randomPlaceholder ?>" name="q" required>
-                <button class="tombol-cari" type="submit"><i class="fa-solid fa-wand-sparkles"></i></button>
+                <a href="?show=all" class="tombol-reset">All</a>
+                <input type="text" class="pencarian" placeholder="<?= $randomPlaceholder ?>" name="q" value="<?= htmlspecialchars($keyword) ?>">
+                <button class="tombol-cari" type="submit"><i class="fa-solid fa-wand-sparkles"></i></button><br>
             </div>
         </form>
 
-
-        <?php if ($keyword): ?>
+        <?php if ($keyword !== ''): ?>
             <h2 class="judulbagian">Pengguna yang ditemukan:</h2>
             <div class="kumpulan-profil">
                 <?php if (mysqli_num_rows($hasilUser) > 0): ?>
                     <?php while ($user = mysqli_fetch_assoc($hasilUser)): ?>
                         <?php
                         $foto = !empty($user['fotoprofil']) ? $user['fotoprofil'] : getDefaultAvatar($user['id_user'], $defaultAvatars);
-                        $fotoEncoded = urlencode($foto);
-                        $usernameSafe = htmlspecialchars($user['username']);
                         ?>
                         <div class="kartupengguna">
-                            <img src="../uploads/profil/<?= $fotoEncoded ?>" class="kartupengguna-img" alt="<?= $usernameSafe ?>">
-                            <div><?= $usernameSafe ?></div>
+                            <img src="../uploads/profil/<?= urlencode($foto) ?>" class="kartupengguna-img" alt="<?= htmlspecialchars($user['username']) ?>">
+                            <div><?= htmlspecialchars($user['username']) ?></div>
                         </div>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <p style="color:#aaa; margin-left: 10px;">Hmm... gak ada pengguna yang cocok buat “<strong><?= htmlspecialchars($keyword) ?></strong>” 😢</p>
+                    <p>Tidak ada pengguna ditemukan untuk "<?= htmlspecialchars($keyword) ?>"</p>
                 <?php endif; ?>
             </div>
+        <?php endif; ?>
 
-            <h2 class="judulbagian">Resep yang ditemukan:</h2>
+        <?php if (!empty($hasilResep)): ?>
+            <h2 class="judulbagian">Resep:</h2>
             <div class="kumpulan-kartu-grid">
-                <?php if (mysqli_num_rows($hasilResep) > 0): ?>
-                    <?php while ($row = mysqli_fetch_assoc($hasilResep)): ?>
-                        <a href="../resep/detail.php?id=<?= $row['id_resep'] ?>" class="karturesep-scroll">
-                            <img src="../uploads/<?= $row['foto'] ?>" alt="<?= htmlspecialchars($row['judul']) ?>">
-                            <div class="judulresep"><?= htmlspecialchars($row['judul']) ?></div>
-                        </a>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p style="color:#aaa;">Kayanya mantra resep kamu kurang tepat deh...<br>"<?= htmlspecialchars($keyword) ?>"</p>
-                <?php endif; ?>
+                <?php while ($row = mysqli_fetch_assoc($hasilResep)): ?>
+                    <a href="../resep/detail.php?id=<?= $row['id_resep'] ?>" class="karturesep-scroll">
+                        <img src="../uploads/<?= $row['foto'] ?>" alt="<?= htmlspecialchars($row['judul']) ?>">
+                        <div class="judulresep"><?= htmlspecialchars($row['judul']) ?></div>
+                    </a>
+                <?php endwhile; ?>
             </div>
+        <?php elseif ($keyword !== ''): ?>
+            <p>Tidak ada resep ditemukan untuk "<?= htmlspecialchars($keyword) ?>"</p>
         <?php endif; ?>
     </div>
 
@@ -169,8 +160,6 @@ function getDefaultAvatar($userId, $defaultAvatars)
         </div>
     </footer>
 
-    <?php include '../include/animasiloding/loadingjs.php' ?>
-
+    <?php include '../include/animasiloding/loadingjs.php'; ?>
 </body>
-
 </html>

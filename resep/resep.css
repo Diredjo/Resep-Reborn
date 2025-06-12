@@ -21,6 +21,7 @@ body {
 .form-resep-fancy textarea {
   font-family: 'Poppins', sans-serif;
   width: 100%;
+  color: white !important;
   padding: 12px;
   border-radius: 10px;
   border: none;
@@ -192,21 +193,44 @@ input[type="file"] {
   font-size: 14px;
 }
 
+.btn-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.center-buttons {
+  width: 100%;
+}
+
+
 .btn-suka,
 .btn-bookmark {
-  background: #444;
+  background: #555;
   border: none;
   color: white;
-  padding: 8px 12px;
+  padding: 8px 8px;
   border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .btn-suka:hover,
 .btn-bookmark:hover {
   background: #666;
 }
+
+.btn-suka i,
+.btn-bookmark i {
+  color: inherit;
+  font-size: 16px;
+}
+
 
 .kontainer-resep {
   display: flex;
@@ -301,11 +325,12 @@ input[type="file"] {
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
+  color: white !important;
 }
 
 .tombol-ikuti {
   background: linear-gradient(to right, #ffcc33, #f20069);
-  color: #000;
+  color: #fff !important;
 }
 
 .btn-suka {

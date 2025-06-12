@@ -67,7 +67,7 @@ function getDefaultAvatar($userId, $defaultAvatars)
         if (mysqli_num_rows($akun_diikuti) > 0) {
           while ($akun = mysqli_fetch_assoc($akun_diikuti)) {
             $foto = !empty($akun['fotoprofil']) ? $akun['fotoprofil'] : getDefaultAvatar($akun['id_user'], $defaultAvatars);
-            $link_profil = "profil.php?id=" . urlencode($akun['id_user']);
+            $link_profil = "profil.php?id_user=" . urlencode($akun['id_user']);
 
             echo "<a href='$link_profil' style='text-decoration: none; color: inherit;'>
                     <div class='kartupengguna' style='cursor: pointer;'>

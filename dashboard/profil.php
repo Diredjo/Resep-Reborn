@@ -13,7 +13,6 @@ $defaultAvatars = ['default.png', 'Koki.png', 'Petani.png', 'Ahli.png', 'Foodie.
 $lihat_id = isset($_GET['id_user']) ? intval($_GET['id_user']) : $user_id;
 $saya_sendiri = ($lihat_id === $user_id);
 
-// Ambil data user, jumlah followers, dan jumlah postingan dalam satu query
 $query = "
     SELECT 
         u.*, 
@@ -36,16 +35,12 @@ $jumlah_postingan = $user_dilihat['total_postingan'];
 $tanggal_daftar = strtotime($user_dilihat['tanggal_daftar']);
 $hari_bergabung = floor((time() - $tanggal_daftar) / (60 * 60 * 24));
 
-// Ambil resep
 $resep_user = mysqli_query($koneksi, "SELECT * FROM tabel_resep WHERE id_user = $lihat_id ORDER BY tanggal_posting DESC");
 
-// Ambil foto profil
 $fotoProfil = !empty($user_dilihat['fotoprofil']) ? $user_dilihat['fotoprofil'] : getDefaultAvatar($lihat_id, $defaultAvatars);
 
-// Foto profil pengguna yang login (bukan yang dilihat)
 $fotoProfilPengguna = !empty($user['fotoprofil']) ? $user['fotoprofil'] : getDefaultAvatar($user_id, $defaultAvatars);
 
-// Cek follow
 $is_following = false;
 if (!$saya_sendiri) {
     $cek_follow_query = mysqli_query($koneksi, "SELECT 1 FROM tabel_follow WHERE id_pengikut = $user_id AND id_diikuti = $lihat_id LIMIT 1");
@@ -69,18 +64,24 @@ $halaman = 'Profil.php';
 
 <body>
     <div class="sidebar" id="sidebar">
-        <button class="toggle-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-arrows-left-right-to-line"></i></button>
+        <button class="toggle-sidebar" onclick="toggleSidebar()"><i
+                class="fa-solid fa-arrows-left-right-to-line"></i></button>
         <img src="../Foto/Logoputih.png" alt="Resep Reborn" class="logo">
         <ul class="navigasi">
-            <li><a href="Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i class="fa-solid fa-search"></i> Pencarian</a></li>
-            <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i class="fa-solid fa-heart"></i> Favorit</a></li>
-            <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i class="fa-solid fa-bookmark"></i> Bookmark</a></li>
-            <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i class="fa-solid fa-user"></i> Profil</a></li>
+            <li><a href="Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-search"></i> Pencarian</a></li>
+            <li><a href="Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-heart"></i> Favorit</a></li>
+            <li><a href="Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-bookmark"></i> Bookmark</a></li>
+            <li><a href="Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-user"></i> Profil</a></li>
 
-             <?php if ($kategori === 'ADMIN'): ?>
-                <li><a href="admin/data.php" class="<?= ($halaman == 'data.php') ? 'active' : '' ?>"><i class="fa-solid fa-chart-line" style="margin-right: 5px;"></i> Admin Panel</a></li>
+            <?php if ($kategori === 'ADMIN'): ?>
+                <li><a href="admin/data.php" class="<?= ($halaman == 'data.php') ? 'active' : '' ?>"><i
+                            class="fa-solid fa-chart-line" style="margin-right: 5px;"></i> Admin Panel</a></li>
             <?php endif; ?>
-            
+
             <li><a href="../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
         </ul>
         <a href="sk.html" class="SK">Baca soal Syarat & Ketentuan Kebijakaan Privasi</a>
@@ -105,7 +106,8 @@ $halaman = 'Profil.php';
                     <form action="sosial/follow/followprocess.php" method="POST" style="display:inline;">
                         <input type="hidden" name="id_diikuti" value="<?= $lihat_id ?>">
                         <input type="hidden" name="aksi" value="<?= $is_following ? 'unfollow' : 'follow' ?>">
-                        <button type="submit" class="tombol-follow" style="background:<?= $is_following ? '#aaa' : 'linear-gradient(to right, #ffcc33, #f20069)' ?>;">
+                        <button type="submit" class="tombol-follow"
+                            style="background:<?= $is_following ? '#aaa' : 'linear-gradient(to right, #ffcc33, #f20069)' ?>;">
                             <?= $is_following ? 'Mengikuti' : 'IKUTI' ?>
                         </button>
 
@@ -131,13 +133,19 @@ $halaman = 'Profil.php';
             <h2>Postingan <?= $saya_sendiri ? 'saya' : 'pengguna' ?></h2>
             <div class="kumpulan-kartu-wrap">
                 <?php while ($resep = mysqli_fetch_assoc($resep_user)): ?>
-                    <div class='karturesep'>
-                        <img src='../uploads/<?= urlencode($resep['foto']) ?>' alt='<?= htmlspecialchars($resep['judul']) ?>'>
-                        <div class='judulresep'><?= htmlspecialchars($resep['judul']) ?></div>
-                    </div>
+                    <a href="../resep/detail.php?id=<?= $resep['id_resep'] ?>" class="link-kartu">
+                        <div class="karturesep">
+                            <img src="../uploads/<?= urlencode($resep['foto']) ?>"
+                                alt="<?= htmlspecialchars($resep['judul']) ?>">
+                            <div class="judulresep"><?= htmlspecialchars($resep['judul']) ?></div>
+                        </div>
+                    </a>
                 <?php endwhile; ?>
             </div>
+
         </div>
+
+
     </div>
 
     <footer class="footer" id="footer">

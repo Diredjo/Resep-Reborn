@@ -18,7 +18,6 @@ $halaman = 'Bookmark.php';
 </head>
 
 <body>
-    <!-- Sidebar Navigasi -->
     <div class="sidebar" id="sidebar">
         <button class="toggle-sidebar" onclick="toggleSidebar()">
             <i class="fa-solid fa-arrows-left-right-to-line"></i>

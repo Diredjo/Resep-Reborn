@@ -2,8 +2,11 @@
 include '../../include/db.php';
 include '../../include/session.php';
 
-if (!isset($_GET['id_resep'])) exit("ID resep tidak valid.");
-$id_resep = intval($_GET['id_resep']);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['id_resep'])) {
+    exit("ID resep tidak valid.");
+}
+
+$id_resep = intval($_POST['id_resep']);
 $id_user = $_SESSION['user_id'];
 
 $cek = mysqli_query($koneksi, "SELECT * FROM tabel_suka WHERE id_user = $id_user AND id_resep = $id_resep");
