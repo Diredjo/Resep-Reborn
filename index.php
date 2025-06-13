@@ -1,3 +1,5 @@
+<?php include 'include/animasiloding/loadingcss.php' ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -22,10 +24,10 @@
                         class="fa-solid fa-home"></i> Home</a></li>
             <li><a href="akun/login.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i
                         class="fa-solid fa-user"></i> Login</a></li>
-            <a href="about/SK.html" class="SK">Syarat & Ketentuan</a>
+            <a href="dashboard/about/SK.html" class="SK">Syarat & Ketentuan</a>
     </div>
 
-    <div class="konten">
+    <div class="konten"  id="konten">
         <main class="main">
             <header class="header">
                 <div class="header" style="margin-top: 20px;">
@@ -61,11 +63,7 @@
 
             </divkonten>
 
-            <script>
-                function toggleSidebar() {
-                    document.getElementById("sidebar").classList.toggle("collapsed");
-                }
-            </script>
+            <?php include 'include/animasiloding/loadingjs.php' ?>
 </body>
 
 </html>

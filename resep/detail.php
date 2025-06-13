@@ -121,7 +121,7 @@ $video_embed = convertToEmbedURL($data['video']);
                 <div class="profil-uploader">
                     <img src="../uploads/profil/<?= htmlspecialchars($data['fotoprofil'] ?: 'default.png') ?>"
                         class="foto-profil">
-                    <a href="../dashboard/Profil.php?id=<?= $lihat_id ?>"
+                    <a href="../dashboard/Profil.php?id_user=<?= $lihat_id ?>"
                         class="username-uploader">@<?= htmlspecialchars($data['username']) ?></a>
                 </div>
                 <div class="tombol-interaksi">
@@ -147,7 +147,7 @@ $video_embed = convertToEmbedURL($data['video']);
                                     <input type="hidden" name="id_resep" value="<?= $id_resep ?>">
                                     <button type="submit" class="btn-bookmark">
                                         <i class="fa<?= $is_bookmarked ? 's' : 'r' ?> fa-bookmark"
-                                            style="color: <?= $is_bookmarked ? '#007BFF' : 'white' ?>;"></i>
+                                            style="color: <?= $is_bookmarked ? '#fff' : 'white' ?>;"></i>
                                     </button>
                                 </form>
                             </div>
