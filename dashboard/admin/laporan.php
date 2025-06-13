@@ -56,7 +56,11 @@ $laporan = mysqli_query($koneksi, "SELECT lp.*, u1.username AS pelapor, u2.usern
                 <th>Pelapor</th>
                 <th>Target</th>
                 <th>Alasan</th>
+<<<<<<< HEAD
                 <th>Detail</th>
+=======
+                <th>Tambahan</th>
+>>>>>>> 469d32bb10a292733eba4a66ef358d3bb69acac5
                 <th>Status</th>
                 <th>Aksi</th>
             </tr>
@@ -72,7 +76,11 @@ $laporan = mysqli_query($koneksi, "SELECT lp.*, u1.username AS pelapor, u2.usern
                     <td><span class="badge badge-<?= $row['status'] ?>"><?= $row['status'] ?></span></td>
                     <td>
                         <select class="status-dropdown" data-id="<?= $row['id'] ?>">
+<<<<<<< HEAD
                             <option value="dikirim" <?= $row['status'] == 'dikirim' ? 'selected' : '' ?>>Terkirim</option>
+=======
+                            <option value="dikirim" <?= $row['status'] == 'dikirim' ? 'selected' : '' ?>>dikirim</option>
+>>>>>>> 469d32bb10a292733eba4a66ef358d3bb69acac5
                             <option value="ditolak" <?= $row['status'] == 'ditolak' ? 'selected' : '' ?>>ditolak</option>
                             <option value="diterima" <?= $row['status'] == 'diterima' ? 'selected' : '' ?>>diterima</option>
                         </select>

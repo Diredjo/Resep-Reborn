@@ -108,9 +108,45 @@ $kategori = $user['kategori'];
                     <p><?= htmlspecialchars($user_dilihat['bio']) ?></p>
                 </div>
                 <?php if (!$saya_sendiri): ?>
+<<<<<<< HEAD
                     <div class="action-buttons">
                         <button id="reportButton" class="btn btn-danger"><i
                                 class="fa-solid fa-circle-exclamation"></i></button>
+=======
+                    <button id="reportButton" class="btn btn-danger"><i class="fa-solid fa-circle-exclamation"></i></button>
+                    <div id="reportOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000099; z-index:9999;">
+                        <div style="background:white; width:90%; max-width:400px; margin:10% auto; padding:20px; border-radius:10px;">
+                            <h3>Laporkan Profil</h3>
+                            <form id="reportForm">
+                                <label>Alasan:</label>
+                                <select name="alasan" required>
+                                    <option value="">Pilih</option>
+                                    <option value="Spam">Spam</option>
+                                    <option value="Konten Tidak Pantas">Konten Tidak Pantas</option>
+                                    <option value="Penipuan">Penipuan</option>
+                                    <option value="Pelecehan">Pelecehan</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select><br><br>
+
+                                <label>Alasan Tambahan (opsional):</label>
+                                <textarea name="alasan_tambahan" rows="3" style="width:100%;"></textarea><br><br>
+
+                                <input type="hidden" name="id_dilaporkan" value="<?= $user_dilihat['id_user'] ?>">
+                                <input type="hidden" name="id_pelapor" value="<?= $user_id ?>">
+                                <button type="submit" class="btn btn-primary">Kirim Laporan</button>
+                                <button type="button" onclick="toggleReportOverlay()" class="btn btn-secondary">Batal</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <form action="sosial/follow/followprocess.php" method="POST" style="display:inline;">
+                        <input type="hidden" name="id_diikuti" value="<?= $lihat_id ?>">
+                        <input type="hidden" name="aksi" value="<?= $is_following ? 'unfollow' : 'follow' ?>">
+                        <button type="submit" class="tombol-follow"
+                            style="background:<?= $is_following ? '#aaa' : 'linear-gradient(to right, #ffcc33, #f20069)' ?>;">
+                            <?= $is_following ? 'Mengikuti' : 'IKUTI' ?>
+                        </button>
+>>>>>>> 469d32bb10a292733eba4a66ef358d3bb69acac5
 
                         <form action="sosial/follow/followprocess.php" method="POST" style="display:inline;">
                             <input type="hidden" name="id_diikuti" value="<?= $lihat_id ?>">
@@ -173,6 +209,7 @@ $kategori = $user['kategori'];
         </div>
     </footer>
 
+<<<<<<< HEAD
     <div id="reportOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
         <div style="background: #333; width:90%; max-width:400px; margin:10% auto; padding:20px; border-radius:10px;">
             <h3>Laporkan Profil</h3>
@@ -198,6 +235,8 @@ $kategori = $user['kategori'];
         </div>
     </div>
 
+=======
+>>>>>>> 469d32bb10a292733eba4a66ef358d3bb69acac5
     <script>
         function toggleReportOverlay() {
             const overlay = document.getElementById('reportOverlay');
@@ -206,14 +245,24 @@ $kategori = $user['kategori'];
 
         document.getElementById('reportButton').addEventListener('click', toggleReportOverlay);
 
+<<<<<<< HEAD
         document.getElementById('reportForm').addEventListener('submit', function (e) {
+=======
+        document.getElementById('reportForm').addEventListener('submit', function(e) {
+>>>>>>> 469d32bb10a292733eba4a66ef358d3bb69acac5
             e.preventDefault();
             const formData = new FormData(this);
 
             fetch('sosial/lapor_profil.php', {
+<<<<<<< HEAD
                 method: 'POST',
                 body: formData
             })
+=======
+                    method: 'POST',
+                    body: formData
+                })
+>>>>>>> 469d32bb10a292733eba4a66ef358d3bb69acac5
                 .then(r => r.text())
                 .then(data => {
                     alert(data);
