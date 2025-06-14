@@ -8,10 +8,10 @@ $resep = mysqli_query($koneksi, "
     FROM tabel_resep r 
     LEFT JOIN tabel_highlight h ON r.id_highlight = h.id_highlight 
     ORDER BY r.tanggal_posting DESC 
-    LIMIT 10
+    LIMIT 100
 ");
 
-$uploader = mysqli_query($koneksi, "SELECT * FROM tabel_user ORDER BY RAND() LIMIT 5");
+$uploader = mysqli_query($koneksi, "SELECT * FROM tabel_user ORDER BY RAND() LIMIT 15");
 
 $masakan = mysqli_query($koneksi, "
     SELECT r.*, h.label AS highlight_label, h.icon AS highlight_icon 
@@ -19,7 +19,7 @@ $masakan = mysqli_query($koneksi, "
     LEFT JOIN tabel_highlight h ON r.id_highlight = h.id_highlight 
     WHERE tipe = 'Makanan' 
     ORDER BY RAND() 
-    LIMIT 10
+    LIMIT 100
 ");
 
 $placeholders = [
@@ -106,7 +106,7 @@ function getDefaultAvatar($userId, $defaultAvatars)
         <div class="bagian">
             <div class="kumpulan-kartu">
                 <?php while ($row = mysqli_fetch_assoc($resep)):
-                    $foto = urlencode($row['foto']);
+                    $foto = htmlspecialchars($row['foto']);
                     $judul = htmlspecialchars($row['judul']);
                     $highlight = $row['highlight_label'];
                     $icon = $row['highlight_icon'];
@@ -148,7 +148,7 @@ function getDefaultAvatar($userId, $defaultAvatars)
         <div class="bagian">
             <div class="kumpulan-kartu">
                 <?php while ($row = mysqli_fetch_assoc($masakan)):
-                    $foto = urlencode($row['foto']);
+                    $foto = htmlspecialchars($row['foto']);
                     $judul = htmlspecialchars($row['judul']);
                     $highlight = $row['highlight_label'];
                     $icon = $row['highlight_icon'];
@@ -164,26 +164,26 @@ function getDefaultAvatar($userId, $defaultAvatars)
             </div>
         </div>
 
-        <div class="bagian tentang">
+        <div class="bagian tentang" id="tentang">
             <h2>Ketahui lebih banyak tentang <br><strong>Resep Reborn</strong></h2>
             <div class="kumpulan-kotak">
                 <div class="kotaktentang">
                     <i class="fa-solid fa-laptop-code"></i>
                     <h3>Tujuan Website</h3>
                     <p>Mengurangi pembuangan limbah panen lewat kreativitas resep.</p>
-                    <a href="about/tujuanweb.html">Baca</a>
+                    <a href="#tentang">Baca</a>
                 </div>
                 <div class="kotaktentang">
                     <img src="../foto/fotokreator.jpg" alt="Saqa Pandega">
                     <h3>Kreator</h3>
                     <p>Siswa SMK Telkom Sidoarjo jurusan SIJA, Jawa Timur.</p>
-                    <a href="https://www.instagram.com/panndega_/">Kenalan Yuk!</a>
+                    <a href="https://www.instagram.com/panndega_/" target="_blankawo">Kenalan Yuk!</a>
                 </div>
                 <div class="kotaktentang">
                     <i class="fa-solid fa-graduation-cap"></i>
                     <h3>Tujuan</h3>
                     <p>Proyek Ujian Kenaikan Level kelas 10.</p>
-                    <a href="about/about.html">Baca</a>
+                    <a href="#tentang" style="color: black;">Baca</a>
                 </div>
             </div>
         </div>

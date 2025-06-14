@@ -31,9 +31,32 @@ $followers = mysqli_query($koneksi, "
     <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
     <link rel="shortcut icon" href="../../../LogoPutih.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
 <body>
+    <div class="sidebar" id="sidebar">
+        <button class="toggle-sidebar" onclick="toggleSidebar()"><i
+                class="fa-solid fa-arrows-left-right-to-line"></i></button>
+        <a href="../index.php"><img src="../../../Foto/Logoputih.png" alt="Resep Reborn" class="logo"></a>
+        <ul class="navigasi">
+            <li><a href="../../Pencarian.php" class="<?= ($halaman == 'Pencarian.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-search"></i> Pencarian</a></li>
+            <li><a href="../../Favorit.php" class="<?= ($halaman == 'Favorit.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-heart"></i> Favorit</a></li>
+            <li><a href="../../Bookmark.php" class="<?= ($halaman == 'Bookmark.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-bookmark"></i> Bookmark</a></li>
+            <li><a href=".././Profil.php" class="<?= ($halaman == 'Profil.php') ? 'active' : '' ?>"><i
+                        class="fa-solid fa-user"></i> Profil</a></li>
+            <?php if ($kategori === 'ADMIN'): ?>
+                <li><a href="../admin/data.php"><i class="fa-solid fa-chart-line"></i> Admin Panel</a></li>
+            <?php endif; ?>
+            <li><a href="../../../akun/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+        <a href="../about/SK.html" class="SK">Syarat & Ketentuan</a>
+    </div>
+
     <div class="konten">
         <h2>Followers <?= $saya_sendiri ? 'Saya' : htmlspecialchars($user_dilihat['username']) ?></h2>
         <div class="daftar-followers">
@@ -47,7 +70,7 @@ $followers = mysqli_query($koneksi, "
                         <img src="../../../uploads/profil/<?= urlencode($foto) ?>"
                             alt="<?= htmlspecialchars($f['username']) ?>">
                         <div class="follower-info">
-                            <a href="Profil.php?id_user=<?= $f['id_user'] ?>"
+                            <a href="../../Profil.php?id_user=<?= $f['id_user'] ?>"
                                 class="follower-username"><?= htmlspecialchars($f['username']) ?></a>
 
                             <?php if ($saya_sendiri): ?>

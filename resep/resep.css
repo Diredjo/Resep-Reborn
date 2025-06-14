@@ -212,6 +212,9 @@ input[type="file"] {
   border: none;
   color: white;
   padding: 8px 8px;
+  height: auto;
+  width: 50px;
+  text-align: center;
   border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
@@ -339,7 +342,7 @@ input[type="file"] {
 }
 
 .btn-bookmark {
-  background: #3498db;
+  background: #0094f0;
   color: #fff;
 }
 

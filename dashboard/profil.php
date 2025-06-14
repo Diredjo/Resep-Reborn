@@ -3,6 +3,10 @@ include '../include/db.php';
 include '../include/session.php';
 include '../include/animasiloding/loadingcss.php';
 
+$userQuery = mysqli_query($koneksi, "SELECT * FROM tabel_user WHERE id_user = $user_id LIMIT 1");
+$user = mysqli_fetch_assoc($userQuery);
+
+
 function getDefaultAvatar($id, $avatars)
 {
     return $avatars[$id % count($avatars)];
@@ -39,7 +43,7 @@ $resep_user = mysqli_query($koneksi, "SELECT * FROM tabel_resep WHERE id_user = 
 
 $fotoProfil = !empty($user_dilihat['fotoprofil']) ? $user_dilihat['fotoprofil'] : getDefaultAvatar($lihat_id, $defaultAvatars);
 
-$fotoProfilPengguna = !empty($user['fotoprofil']) ? $user['fotoprofil'] : getDefaultAvatar($user_id, $defaultAvatars);
+$fotoProfilPengguna = !empty($user_id['fotoprofil']) ? $user_id['fotoprofil'] : getDefaultAvatar($user_id, $defaultAvatars);
 
 $is_following = false;
 if (!$saya_sendiri) {
@@ -48,6 +52,7 @@ if (!$saya_sendiri) {
 }
 
 $halaman = 'Profil.php';
+$kategori = $user['kategori'];
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -103,15 +108,19 @@ $halaman = 'Profil.php';
                     <p><?= htmlspecialchars($user_dilihat['bio']) ?></p>
                 </div>
                 <?php if (!$saya_sendiri): ?>
-                    <form action="sosial/follow/followprocess.php" method="POST" style="display:inline;">
-                        <input type="hidden" name="id_diikuti" value="<?= $lihat_id ?>">
-                        <input type="hidden" name="aksi" value="<?= $is_following ? 'unfollow' : 'follow' ?>">
-                        <button type="submit" class="tombol-follow"
-                            style="background:<?= $is_following ? '#aaa' : 'linear-gradient(to right, #ffcc33, #f20069)' ?>;">
-                            <?= $is_following ? 'Mengikuti' : 'IKUTI' ?>
-                        </button>
+                    <div class="action-buttons">
+                        <button id="reportButton" class="btn btn-danger"><i
+                                class="fa-solid fa-circle-exclamation"></i></button>
 
-                    </form>
+                        <form action="sosial/follow/followprocess.php" method="POST" style="display:inline;">
+                            <input type="hidden" name="id_diikuti" value="<?= $lihat_id ?>">
+                            <input type="hidden" name="aksi" value="<?= $is_following ? 'unfollow' : 'follow' ?>">
+                            <button type="submit" class="tombol-follow"
+                                style="background:<?= $is_following ? '#aaa' : 'linear-gradient(to right, #ffcc33, #f20069)' ?>;">
+                                <?= $is_following ? 'Mengikuti' : 'IKUTI' ?>
+                            </button>
+                        </form>
+                    </div>
                 <?php else: ?>
                     <a href="edit-profil.php" class="tombol-edit">✎</a>
                 <?php endif; ?>
@@ -142,10 +151,7 @@ $halaman = 'Profil.php';
                     </a>
                 <?php endwhile; ?>
             </div>
-
         </div>
-
-
     </div>
 
     <footer class="footer" id="footer">
@@ -166,6 +172,55 @@ $halaman = 'Profil.php';
             </div>
         </div>
     </footer>
+
+    <div id="reportOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
+        <div style="background: #333; width:90%; max-width:400px; margin:10% auto; padding:20px; border-radius:10px;">
+            <h3>Laporkan Profil</h3>
+            <form id="reportForm">
+                <label>Alasan:</label>
+                <select name="alasan" required>
+                    <option value="">Pilih</option>
+                    <option value="Spam">Spam</option>
+                    <option value="Konten Tidak Pantas">Konten Tidak Pantas</option>
+                    <option value="Penipuan">Penipuan</option>
+                    <option value="Pelecehan">Pelecehan</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select><br><br>
+
+                <label>Detail:</label>
+                <textarea name="alasan_tambahan" rows="3" style="width:100%;"></textarea><br><br>
+
+                <input type="hidden" name="id_dilaporkan" value="<?= $user_dilihat['id_user'] ?>">
+                <input type="hidden" name="id_pelapor" value="<?= $user_id ?>">
+                <button type="submit" class="btn btn-primary">Kirim Laporan</button>
+                <button type="button" onclick="toggleReportOverlay()" class="btn btn-secondary">Batal</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleReportOverlay() {
+            const overlay = document.getElementById('reportOverlay');
+            overlay.style.display = (overlay.style.display === 'none') ? 'block' : 'none';
+        }
+
+        document.getElementById('reportButton').addEventListener('click', toggleReportOverlay);
+
+        document.getElementById('reportForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('sosial/lapor_profil.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(r => r.text())
+                .then(data => {
+                    alert(data);
+                    toggleReportOverlay();
+                });
+        });
+    </script>
 
     <?php include '../include/animasiloding/loadingjs.php' ?>
 </body>
